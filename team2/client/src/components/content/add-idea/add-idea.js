@@ -26,10 +26,9 @@ class AddIdeaPage extends HTMLElement {
     }
 
     /* ----------------------------------------
-    Add-idea.html overview
-    - On page load startAddIdea()
+    AddIdeaLogic() overview
     - Checks for existing userData in displayIdeas() with localStorage
-        - If present populate table in createRow()
+        - If present populate table with AddIdea() and createRow()
     - User submits idea and calls addIdea()
         - Jar is animated startJar()
 
@@ -38,10 +37,8 @@ class AddIdeaPage extends HTMLElement {
     - Change date to dd-mm-yy
     --------------------------------------------*/
     addIdeaLogic() {
-        // For userData object
-        let userData = {}
-
         // Import user data if previously submitted
+        let userData = {}
         userData = JSON.parse(localStorage.getItem('myIdeaList'))
 
         if (!userData) {
@@ -51,17 +48,15 @@ class AddIdeaPage extends HTMLElement {
                 ideas: []
             }
         }
-        console.log(userData)
 
-        // Populate data on page if present
+        // Populate data on page if data is present
         displayIdeas()
 
         // Call function addIdea on form-btn submit
-        document.querySelector('.form-btn').addEventListener('click', addIdea)
+        const addIdeaForm = document.querySelector('#add-item-form')
+        console.log(addIdeaForm)
 
-        //////////////////////////////////
-
-        function addIdea(event) {
+        addIdeaForm.addEventListener('submit', (event) =>  {
             event.preventDefault() // Stops form reload on submit
             
             // Get radio input
@@ -77,11 +72,10 @@ class AddIdeaPage extends HTMLElement {
             }
         
             // Validate input 
-            if (document.getElementById('event-name').value && checkedRadio == "") {
+            if (document.getElementById('event-name').value && checkedRadio != "") {
                 let idea = {
                     id: Date.now(),
                     name: document.getElementById('event-name').value,
-                    URL: document.getElementById('event-url').value,
                     date: document.getElementById('event-date').value,
                     category: checkedRadio
                 }
@@ -93,7 +87,7 @@ class AddIdeaPage extends HTMLElement {
                 localStorage.setItem('myIdeaList', JSON.stringify(userData))
             
                 // Update idea table
-                createRow(idea.name, idea.URL, idea.date, idea.category)
+                createRow(idea.name, idea.date, idea.category)
             
                 // Animate jar shake
                 let jar = document.querySelector('.jar')
@@ -101,21 +95,26 @@ class AddIdeaPage extends HTMLElement {
             }
             else {
                 console.log("Add an idea first")
+                setFormMessage( "error", "Add an idea first")
             }
-        
-            
+        })
+        function setFormMessage( type, message) {
+            const messageElement = document.querySelector('.form-message')
+            messageElement.textContent = message
+            messageElement.classList.remove('form-message-error', 'form-message-success')
+            messageElement.classList.add(`form-message-${type}`)
         }
 
         function displayIdeas() {
             let ideaArray = userData.ideas
 
-            // Creates a table row for every existing entry
+            // Creates a table row for every existing idea entry
             for (let i = 0; i < ideaArray.length; i++) {
-                createRow(ideaArray[i].name, ideaArray[i].URL, ideaArray[i].date, ideaArray[i].category)
+                createRow(ideaArray[i].name, ideaArray[i].date, ideaArray[i].category)
             }
         }
 
-        function createRow(name, url, date, category) {
+        function createRow(name, date, category) {
             let ideaTable = document.querySelector('.idea-table')
             let row = document.createElement('tr')
 
@@ -125,7 +124,6 @@ class AddIdeaPage extends HTMLElement {
             cell1.innerHTML = name
             cell2.innerHTML = date
             cell3.innerHTML = `<label class="${category} category-options">${category}</label>`
-
             ideaTable.appendChild(row)
         }
     }
@@ -138,13 +136,13 @@ class AddIdeaPage extends HTMLElement {
 
     render() {
         this.innerHTML = `
-        <main id="add-item" onload="startAddIdea()">
+        <main id="add-item">
             <div class="container">
                 <!--Form and image-->
                 <section class="split idea-form">
                     <div class="card">
                         <!--User submission form-->
-                        <form>
+                        <form id="add-idea-form">
                             <div class="split">
                                 <div class="form-space">
                                     <h3>
@@ -152,8 +150,9 @@ class AddIdeaPage extends HTMLElement {
                                     </h3>
 
                                     <input autofocus class="form-input" type="text" name="event-name" id="event-name"
-                                        placeholder="'FCC Dallas Meetup'" required />
-
+                                        placeholder="'FCC Dallas Meetup'" 
+                                    />
+                                    <div class="form-message"></div>
                                     <br>
 
                                     <h3>
@@ -188,7 +187,7 @@ class AddIdeaPage extends HTMLElement {
                                     <label class="other category-options" for="other-btn">Other</label>
                                 </div>
                             </div>
-                            <input type="submit" value="Submit" class="form-btn" />
+                            <input onClick="handleSubmit()" type="submit" value="Submit" class="form-btn" />
                         </form>
                     </div>
 
