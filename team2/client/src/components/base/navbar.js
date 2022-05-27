@@ -14,11 +14,10 @@ class Navigation extends HTMLElement {
         mobileMenu.addEventListener('click', () => {
             mobileMenu.classList.toggle('active')
             navMenu.classList.toggle('active')
-            
         })
 
         // Add background to Navbar on scroll
-        window.onscroll = () => {
+        window.onscroll = (nav) => {
             if(document.body.scrollTop > 30 || document.documentElement.scrollTop > 30) {
                 nav.style.background = "rgba(123, 136, 209, .9)"
             }
