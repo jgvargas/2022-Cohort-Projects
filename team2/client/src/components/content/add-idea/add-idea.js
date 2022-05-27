@@ -53,8 +53,8 @@ class AddIdeaPage extends HTMLElement {
         displayIdeas()
 
         // Call function addIdea on form-btn submit
-        const addIdeaForm = document.querySelector('#add-item-form')
-        console.log(addIdeaForm)
+        var addIdeaForm = document.getElementById('add-idea-form');
+        console.log('test', addIdeaForm)
 
         addIdeaForm.addEventListener('submit', (event) =>  {
             event.preventDefault() // Stops form reload on submit
@@ -130,6 +130,7 @@ class AddIdeaPage extends HTMLElement {
 
     connectedCallback() {
         this.render();
+        
         this.globalLogic();
         this.addIdeaLogic();
     }
@@ -187,7 +188,7 @@ class AddIdeaPage extends HTMLElement {
                                     <label class="other category-options" for="other-btn">Other</label>
                                 </div>
                             </div>
-                            <input onClick="handleSubmit()" type="submit" value="Submit" class="form-btn" />
+                            <input type="submit" value="Submit" class="form-btn" />
                         </form>
                     </div>
 
