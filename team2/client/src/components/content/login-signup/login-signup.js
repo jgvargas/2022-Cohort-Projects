@@ -1,10 +1,12 @@
 class LoginSignUpPage extends HTMLElement {
     constructor() {
         super();
+
         this.loginProps = {
             username: "",
             password: "",
         };
+
         this.signupProps = {
             username: "",
             email: "",
@@ -16,7 +18,7 @@ class LoginSignUpPage extends HTMLElement {
     login() {
         var form = document.getElementById('login');
 
-        form.addEventListener('submit', function(event) {
+        form.addEventListener('submit', async function(event) {
             event.preventDefault();
 
             var username = document.getElementById('username').value;
@@ -24,14 +26,19 @@ class LoginSignUpPage extends HTMLElement {
             
             var requestOptions = {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    username: username,
-                    password: password
-                })
+                mode: 'cors',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(
+                    {
+                        "username": username,
+                        "password": password
+                    }
+                )
             };
 
-            fetch(`http://localhost:17510/Api/Auth/Login`, requestOptions)
+            await fetch(`http://localhost:17510/Api/Auth/Login`, requestOptions)
             .then(response => console.log(response.json()))
             .catch(error => console.log(error));
         })

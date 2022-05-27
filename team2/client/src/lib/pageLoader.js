@@ -17,7 +17,7 @@ function loadScript(location, fileName) {
 
     script.setAttribute("type", "text/javascript");
     script.setAttribute("src", location + fileName);
-    document.getElementsByTagName("head")[0].appendChild(script);
+    document.getElementsByTagName("head")[0].appendChild(script).async;
 }
 
 // List of components required to be loaded to render
@@ -31,6 +31,6 @@ const components = [
 // Add the current page to the components array
 addPageToComponentsArray();
 // Load components
-components.map(file => loadScript("./src/components/", file));
+components.map(async file => await loadScript("./src/components/", file));
 // Load project.js file
 loadScript("../", "./src/project.js");
