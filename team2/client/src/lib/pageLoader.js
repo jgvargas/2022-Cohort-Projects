@@ -37,8 +37,7 @@ function loadFontAwesome() {
     script.src = "https://kit.fontawesome.com/d828ae233c.js";
     script.type = "text/javascript";
     script.crossOrigin = "anonymous"
-    script.async;
-    document.getElementsByTagName("head")[0].appendChild(script);
+    document.getElementsByTagName("head")[0].appendChild(script).async;
 }
 
 // List of components required to be loaded to render
