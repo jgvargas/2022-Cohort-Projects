@@ -38,7 +38,9 @@ class LoginSignUpPage extends HTMLElement {
 
             // If sucess
             setFormMessage(loginForm, "success", "You're logged in")
-            isLoggedIn = true
+            document.cookie = "isLoggedIn=true"
+            document.cookie = "SameSite=Strict"
+
             // If failed
             //setFormMessage(loginForm, "error", "Invalid username password combination")
         })
