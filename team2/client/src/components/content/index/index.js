@@ -3,8 +3,45 @@ class IndexPage extends HTMLElement {
         super();
     }
 
+    indexLogic() {
+        /*--------------------
+            Scroll animations
+        --------------------*/
+        let reveals = document.querySelectorAll('.reveal')
+        window.addEventListener('scroll', reveal)
+        console.log(reveals)
+
+        function reveal() {
+            for(let i = 0; i< reveals.length; i++) {
+                let windowheight = window.innerHeight;
+                
+                let revealTop = reveals[i].getBoundingClientRect().top;
+                console.log(windowheight - revealTop)
+                var revealPoint = 100;
+
+                if( revealTop < windowheight - revealPoint) {
+                    reveals[i].classList.add('active')
+                }
+                else {
+                    reveals[i].classList.remove('active')
+                }
+            }
+        }
+
+        // Add background to Navbar on scroll
+        window.onscroll = () => {
+            if(document.body.scrollTop > 30 || document.documentElement.scrollTop > 30) {
+                nav.style.background = "rgba(123, 136, 209, .9)"
+            }
+            else {
+                nav.style.background = "none"
+            }
+        }
+    }
+
     connectedCallback() {
         this.render();
+        this.indexLogic();
     }
 
     render() {
@@ -20,7 +57,7 @@ class IndexPage extends HTMLElement {
                                 What do you want to do today?
                             </h1>
                             <p class="section-text">
-                                In a busy world of possibilities it can be hard to choose. Let <span class="idea-jar-ref">Idea Jar</span> help! 
+                                In a busy world of possibilities it can be hard to choose. Let <a href="#sign-up" class="idea-jar-ref">Idea Jar</a> help! 
                             </p>
                         </div>
                         
@@ -38,25 +75,25 @@ class IndexPage extends HTMLElement {
     
             <!--Second-->
             <section id="home-second">
-                <div class="container split alt-split">
+                <div class="container split alt-split reveal">
                     <div class="polaroid-space">
                         <figure class="polaroid">
                             <img class="" src="./src/img/people-sitting-park.jpg" alt="">
-                            <figcaption>Park Festival</figcaption>
+                            <figcaption></figcaption>
                         </figure>
                         <figure class="polaroid">
                             <img class="" src="./src/img/people-on-river.jpg" alt="">
-                            <figcaption>Sandy Creek</figcaption>
+                            <figcaption></figcaption>
                         </figure>
                         
                     </div>
                         
-                    <div class="section-space">
+                    <div class="section-space card">
                         <h1 class="section-header">
                             Explore your world
                         </h1>
                         <p class="section-text">
-                            <span class="idea-jar-ref">Idea Jar</span> allows you to keep track of resturants you want to try and fun activities you'd like to do. 
+                        <a href="#sign-up" class="idea-jar-ref">Idea Jar</a> allows you to keep track of resturants you want to try and fun activities you'd like to do. 
                         </p>
                     </div>
                 </div>
@@ -69,34 +106,32 @@ class IndexPage extends HTMLElement {
             </section>
     
             <section id="home-third">
-                <div class="container">
+                <div class="container reveal">
 
                         <div class="section-space">
                             <h1 class="section-header">
                                 Try Idea Jar out!
                             </h1>
-                            <p>What can you do?</p>
                             <p class="section-text">
                                 <section class="containerExplain">
 
                                     <section>
-        
-                                        <div class="putIdeaExplain outdoor">PUT IDEA IN JAR</div>
+                                        <div class="putIdeaExplain outdoor">Add an Idea</div>
                                         <p>Add resturants and fun activities when you learn about them.</p>
                                     </section>
                                     <section>
-                                        <div class="takeIdeaExplain indoor">TAKE IDEA FROM JAR</div>
-                                        <p>Have <span class="idea-jar-ref">Idea Jar</span> randomly select from the ideas
+                                        <div class="takeIdeaExplain indoor">Get an Idea</div>
+                                        <p>Have <a href="#sign-up" class="idea-jar-ref">Idea Jar</a> randomly select from the ideas
                                             you've entered</p>
                                     </section>
                                 </section>
                             </p>
-                            <button class="btn stay-home" onclick="location.href='./login-signup.html'">
+                            <button id="sign-up" class="form-btn stay-home" onclick="location.href='./login-signup.html'">
                                 Sign Up
                             </button>
                         </div>
                         
-                        <div class="section-img">
+                        <div class="section-img index-jar-shake">
                             <img src="./src/img/jar_2.png" alt="The Idea Jar">
                         </div>
 

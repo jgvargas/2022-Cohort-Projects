@@ -73,6 +73,14 @@ builder.Services.AddSwaggerGen(options =>
 builder.Services.AddCors(c =>
 {
     c.AddPolicy("AllowOrigin", options => options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+    //c.AddPolicy("CorsPolicy", options =>
+    //{
+    //    options.AllowAnyOrigin()
+    //    .AllowAnyMethod()
+    //    .AllowCredentials()
+    //    .SetIsOriginAllowed((host) => true)
+    //    .AllowAnyHeader();
+    //});
 });
 
 var app = builder.Build();
@@ -94,6 +102,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseRouting();
+app.UseCors("AllowOrigin");
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
