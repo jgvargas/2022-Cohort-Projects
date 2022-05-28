@@ -31,8 +31,9 @@ class AddIdeaPage extends HTMLElement {
         displayIdeas()
 
         // Call function addIdea on form-btn submit
-        var addIdeaForm = document.getElementById('add-idea-form');
+        let addIdeaForm = document.getElementById('add-idea-form');
         console.log('test', addIdeaForm)
+
 
         addIdeaForm.addEventListener('submit', (event) =>  {
             event.preventDefault() // Stops form reload on submit
@@ -108,8 +109,7 @@ class AddIdeaPage extends HTMLElement {
 
     connectedCallback() {
         this.render();
-        
-        this.globalLogic();
+    
         this.addIdeaLogic();
     }
 
