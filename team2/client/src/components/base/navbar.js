@@ -1,6 +1,19 @@
 class Navigation extends HTMLElement {
     constructor() {
         super();
+        this.loggedIn = true;
+        this.signInOptions = [
+            {
+                name: "Add Idea",
+                location: "./add-idea.html",
+                class: "nav-item"
+            },
+            {
+                name: "Get Idea",
+                location: "./get-idea.html",
+                class: "nav-item"
+            },
+        ];
     }
 
     mobileMenu() {
@@ -27,9 +40,51 @@ class Navigation extends HTMLElement {
         }
     }
 
-    async connectedCallback() {
+    // TODO: Ariel--Work in progress
+    // -----------------------------
+    // Need to finish connecting this
+    // once we get the users JWT stored
+    // in the browser.
+    logOut() {
+        var logout = document.getElementById('logout');
+
+        logout.addEventListener('click', function(e) {
+            this.loggedIn = false;
+        })
+    }
+
+    navBarOptions() {
+        var result = ``;
+
+        if (!this.loggedIn){
+            result += `
+                <li>
+                    <a class="nav-btn" href="./login-signup.html">Login</a>
+                </li>
+            `
+            return result;
+        }
+
+        this.signInOptions.map(item => {
+            result += `
+            <li class="${item.class}">
+                <a href="${item.location}">${item.name}</a>
+            </li>
+            `
+        })
+
+        result += `
+            <li>
+                <a class="nav-btn" href="./login-signup.html" id="logout">Logout</a>
+            </li>
+        `
+        return result;
+    }
+
+    connectedCallback() {
         this.render();
-        await this.mobileMenu();
+        this.mobileMenu();
+
     }
     
     render() {
@@ -47,15 +102,7 @@ class Navigation extends HTMLElement {
                         <li class="nav-item">
                             <a href="./index.html">Home</a>
                         </li>
-                        <li class="nav-item">
-                            <a href="./add-idea.html">Add Idea</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="./get-idea.html">Get Idea</a>
-                        </li>
-                        <li>
-                            <a class="nav-btn" href="./login-signup.html">Sign In</a>
-                        </li>
+                        ${this.navBarOptions()}
                     </ul>
                 </div>
             </nav>

@@ -3,7 +3,7 @@ class IndexPage extends HTMLElement {
         super();
     }
 
-    indexLogic() {
+    indexLoad(){
         /*--------------------
             Scroll animations
         --------------------*/
@@ -12,6 +12,7 @@ class IndexPage extends HTMLElement {
         console.log(reveals)
 
         function reveal() {
+            console.log('calling reveal')
             for(let i = 0; i< reveals.length; i++) {
                 let windowheight = window.innerHeight;
                 
@@ -27,21 +28,11 @@ class IndexPage extends HTMLElement {
                 }
             }
         }
-
-        // Add background to Navbar on scroll
-        window.onscroll = () => {
-            if(document.body.scrollTop > 30 || document.documentElement.scrollTop > 30) {
-                nav.style.background = "rgba(123, 136, 209, .9)"
-            }
-            else {
-                nav.style.background = "none"
-            }
-        }
     }
 
     connectedCallback() {
         this.render();
-        this.indexLogic();
+        this.indexLoad();
     }
 
     render() {
