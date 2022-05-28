@@ -81,7 +81,6 @@ class Navigation extends HTMLElement {
     connectedCallback() {
         this.render();
         this.mobileMenu();
-
     }
     
     render() {
