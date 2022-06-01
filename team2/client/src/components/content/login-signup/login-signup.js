@@ -106,7 +106,7 @@ class LoginSignUpPage extends HTMLElement {
                 )
             };
 
-            await fetch(`http://localhost:17510/Api/Auth/Login`, requestOptions)
+            await fetch(`https://idea-jar-api.herokuapp.com/Api/Auth/Login`, requestOptions)
             .then(response => console.log(response.json()))
             .catch(error => console.log(error));
         })
