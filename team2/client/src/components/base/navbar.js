@@ -16,23 +16,35 @@ class Navigation extends HTMLElement {
         ];
     }
 
-    mobileMenu() {
+    navLogic() {
         const mobileMenu = document.getElementById("mobile-menu");
         const navMenu = document.querySelector('.nav-list')
-        const nav = document.querySelector('nav')
+        
         // Hamburger menu
-        mobileMenu.addEventListener('click', () => {
+        mobileMenu.addEventListener('click', (event) => {
+            console.log(event.target)
             mobileMenu.classList.toggle('active')
             navMenu.classList.toggle('active')
         })
 
+        // Profile menu toggle
+        const profileIcon = document.getElementById('profile-icon')
+        const profileMenu = document.getElementById('profile-menu')
+        profileIcon.addEventListener('click', () => {
+            console.log("clicked")
+            profileMenu.classList.toggle('active')
+        })
+
         // Add background to Navbar on scroll
-        window.onscroll = (nav) => {
+        const nav = document.querySelector('nav')
+        window.onscroll = () => {
             if(document.body.scrollTop > 30 || document.documentElement.scrollTop > 30) {
                 nav.style.background = "rgba(123, 136, 209, .9)"
+                profileMenu.style.background = "rgba(123, 136, 209, .9)"
             }
             else {
                 nav.style.background = "none"
+                profileMenu.style.background = 'none'
             }
         }
     }
@@ -72,7 +84,7 @@ class Navigation extends HTMLElement {
 
         result += `
             <li>
-                <a class="nav-btn" href="./login-signup.html" id="logout">Logout</a>
+                <a class="nav-btn" id="profile-icon">J</a>
             </li>
         `
         return result;
@@ -80,7 +92,7 @@ class Navigation extends HTMLElement {
 
     connectedCallback() {
         this.render();
-        this.mobileMenu();
+        this.navLogic();
     }
     
     render() {
@@ -94,6 +106,14 @@ class Navigation extends HTMLElement {
                         <span></span>
                         <span></span>
                     </div>
+                    <ul id="profile-menu">
+                        <li>
+                            Settings
+                        </li>
+                        <li>
+                            <a class="nav-btn" href="./login-signup.html" id="logout">Logout</a>
+                        </li>
+                    </ul>
                     <ul class="nav-list">
                         <li class="nav-item">
                             <a href="./index.html">Home</a>

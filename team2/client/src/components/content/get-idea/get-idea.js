@@ -5,8 +5,6 @@ class GetIdeaPage extends HTMLElement {
     }
 
     startGetIdea() {
-
-
         const popupOverlay = document.querySelector(".popup-overlay");
         const popupContent = document.querySelector(".popup-content");
 

@@ -9,15 +9,12 @@ class IndexPage extends HTMLElement {
         --------------------*/
         let reveals = document.querySelectorAll('.reveal')
         window.addEventListener('scroll', reveal)
-        console.log(reveals)
 
         function reveal() {
-            console.log('calling reveal')
             for(let i = 0; i< reveals.length; i++) {
                 let windowheight = window.innerHeight;
                 
                 let revealTop = reveals[i].getBoundingClientRect().top;
-                console.log(windowheight - revealTop)
                 var revealPoint = 100;
 
                 if( revealTop < windowheight - revealPoint) {

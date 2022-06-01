@@ -1016,6 +1016,46 @@ nav .container {
   transform: translateY(2px);
 }
 
+#profile-icon {
+  background: var(--nav-btn);
+  color: #fff;
+  height: 40px;
+  width: 40px;
+  border: 1px solid var(--nav-btn-hover);
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#profile-icon:hover {
+  background: var(--nav-btn-hover);
+}
+
+#profile-menu {
+  border: 1px solid rgb(121, 121, 121);
+  position: absolute;
+  top: 74px;
+  left: 100%;
+  color: #fff;
+  padding: 15px;
+  transition: .3s;
+  opacity: 0;
+  list-style-type: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#profile-menu.active {
+  left: 80%;
+  opacity: 1;
+}
+
+#profile-menu li {
+  padding: 1rem;
+}
+
 #mobile-menu {
   display: none;
   z-index: 9;
