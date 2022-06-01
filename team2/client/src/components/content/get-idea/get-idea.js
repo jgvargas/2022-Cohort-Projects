@@ -1,6 +1,7 @@
 class GetIdeaPage extends HTMLElement {
     constructor() {
         super();
+        this.ideas = [];
     }
 
     startGetIdea() {
@@ -95,7 +96,36 @@ class GetIdeaPage extends HTMLElement {
         }
     }
 
-    connectedCallback() {
+    async GetIdeas() {
+        var requestOptions = {
+            method: 'GET',
+            mode: 'cors',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        };
+        await fetch(`https://idea-jar-api.herokuapp.com/Api/Idea/GetAll`, requestOptions)
+        .then(response => response.json())
+        .then(data => {
+            data.forEach(idea => this.ideas.push(idea));  
+        })
+        .catch(error => console.log(error));
+    }
+
+    renderIdeas() {
+        var result = "";
+
+        this.ideas.forEach(x => {
+            // class needs to be dynamic
+            result += `<button class="road-trip open shake">${x}</button>`;
+        });
+        
+        return result;
+    }
+
+    async connectedCallback() {
+        this.render();
+        await this.GetIdeas();
         this.render();
         this.startGetIdea();
     }
@@ -111,12 +141,7 @@ class GetIdeaPage extends HTMLElement {
                         <img src="./src/img/jar_2.png" id="jar" alt="jar with colored paper slips"></img>
                     </div>
                     <section class="activity-buttons">
-                        <button class="other open shake">Any Activity</button>
-                        <button class="stay-home open shake">Stay Home</button>
-                        <button class="restaurant open shake">Restaurant</button>
-                        <button class="indoor open shake">Indoor Activity</button>
-                        <button class="outdoor open shake">Outdoor Activity</button>
-                        <button class="road-trip open shake">Road Trip</button>
+                        ${this.ideas.length == 0 ? `<h1>Loading</h1>` : this.renderIdeas()}
                     </section>
                 </div>
                 <!--Creates the popup body-->
