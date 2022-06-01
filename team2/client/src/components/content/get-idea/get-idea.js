@@ -1,10 +1,11 @@
 class GetIdeaPage extends HTMLElement {
     constructor() {
         super();
-        this.ideas = [];
     }
 
     startGetIdea() {
+
+
         const popupOverlay = document.querySelector(".popup-overlay");
         const popupContent = document.querySelector(".popup-content");
 
@@ -15,9 +16,9 @@ class GetIdeaPage extends HTMLElement {
 
                 //adds shake animation to the jar via class, and then removes and brings up popup
                 const jar = document.querySelector("#jar");
-                jar.classList.add("jarShake")
+                jar.classList.add("jar-shake")
                 setTimeout(() => {
-                    jar.classList.remove("jarShake")
+                    jar.classList.remove("jar-shake")
                     popupOverlay.classList.add("active")
                     popupContent.classList.add("active")
                 }, 1500)
@@ -26,22 +27,21 @@ class GetIdeaPage extends HTMLElement {
             });
         });
 
-        //closes popup via close btn or overlay
-        [document.querySelector(".close"), popupOverlay].forEach(btn => {
-            btn.addEventListener("click", () => {
+        //closes popup via close btn or background click
+        document.addEventListener("click", (event) => {
+             if(!event.target.classList.contains("open") && !event.target.classList.contains("popup-btn-container") && !event.target.classList.contains("popup-inner-text"&& !event.target.classList.contains("popup-overlay"))) {
                 popupOverlay.classList.remove("active");
                 popupContent.classList.remove("active");
-
-            })
+            }
         })
 
-        userData = JSON.parse(localStorage.getItem('myIdeaList'));
-        popUpWindow = document.querySelector(".popup-content > h2");
+        //get userData from local storage
+        const userData = JSON.parse(localStorage.getItem('myIdeaList'));
+        const popUpWindow = document.querySelector(".popup-content > h2");
 
 
         function getIdea(chosenCategory) {
             //reset optional data fields
-            document.querySelector(".popup-url").innerText = "";
             document.querySelector(".popup-date").innerText = "";
 
             if (!userData || !userData.ideas.length) {
@@ -58,6 +58,7 @@ class GetIdeaPage extends HTMLElement {
 
             //validates user choice and provides feedback
             if (!ideasInCategory.length) {
+                console.log(document.querySelector(".keepIdea").innerText)
                 popUpWindow.innerText = "You have no activities in this category";
                 return
             }
@@ -84,9 +85,6 @@ class GetIdeaPage extends HTMLElement {
 
 
             popUpWindow.innerText = randomIdea.name;
-            if (randomIdea.URL) {
-                document.querySelector(".popup-url").innerText = randomIdea.URL;
-            }
             if (randomIdea.date) {
                 document.querySelector(".popup-date").innerText = `Date: ${randomIdea.date}`;
             }
@@ -94,36 +92,7 @@ class GetIdeaPage extends HTMLElement {
         }
     }
 
-    async GetIdeas() {
-        var requestOptions = {
-            method: 'GET',
-            mode: 'cors',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        };
-        await fetch(`https://idea-jar-api.herokuapp.com/Api/Idea/GetAll`, requestOptions)
-        .then(response => response.json())
-        .then(data => {
-            data.forEach(idea => this.ideas.push(idea));  
-        })
-        .catch(error => console.log(error));
-    }
-
-    renderIdeas() {
-        var result = "";
-
-        this.ideas.forEach(x => {
-            // class needs to be dynamic
-            result += `<button class="road-trip open shake">${x}</button>`;
-        });
-        
-        return result;
-    }
-
-    async connectedCallback() {
-        this.render();
-        await this.GetIdeas();
+    connectedCallback() {
         this.render();
         this.startGetIdea();
     }
@@ -139,7 +108,12 @@ class GetIdeaPage extends HTMLElement {
                         <img src="./src/img/jar_2.png" id="jar" alt="jar with colored paper slips"></img>
                     </div>
                     <section class="activity-buttons">
-                        ${this.ideas.length == 0 ? `<h1>Loading</h1>` : this.renderIdeas()}
+                        <button class="other open shake">Any Activity</button>
+                        <button class="stay-home open shake">Stay Home</button>
+                        <button class="restaurant open shake">Restaurant</button>
+                        <button class="indoor open shake">Indoor Activity</button>
+                        <button class="outdoor open shake">Outdoor Activity</button>
+                        <button class="road-trip open shake">Road Trip</button>
                     </section>
                 </div>
                 <!--Creates the popup body-->
@@ -147,12 +121,11 @@ class GetIdeaPage extends HTMLElement {
                     <div class="popup-overlay">
                         <!--Creates the popup content-->
                         <div class="popup-content">
-                            <h2>I'M SO EXCITED THE POP-UP WORKS!!!!</h2>
-                            <h3 class="popup-url"></h3>
-                            <h3 class="popup-date"></h3>
+                            <h2 class="popup-inner-text">I'M SO EXCITED THE POP-UP WORKS!!!!</h2>
+                            <h3 class="popup-date popup-inner-text"></h3>
                             <!--popup's close button-->
                             <div class="popup-btn-container">
-                            <button class="close mdlBtn">Keep Idea in Jar</button>
+                            <button class="close mdlBtn keepIdea">Keep Idea in Jar</button>
                             <button class="close mdlBtn removeIdea">Remove Idea from Jar</button>
                         </div>
                         </div>
