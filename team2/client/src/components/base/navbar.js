@@ -31,7 +31,6 @@ class Navigation extends HTMLElement {
         const profileIcon = document.getElementById('profile-icon')
         const profileMenu = document.getElementById('profile-menu')
         profileIcon.addEventListener('click', () => {
-            console.log("clicked")
             profileMenu.classList.toggle('active')
         })
 

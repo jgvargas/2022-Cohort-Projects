@@ -3,6 +3,16 @@ class AddIdeaPage extends HTMLElement {
         super();
     }
 
+    setActiveTab() {
+        // Nav tab underline on current page
+        const navItems = document.querySelectorAll('.nav-item')
+        
+        navItems.forEach( navItem => {
+            if(navItem.firstElementChild.innerHTML === 'Add Idea')
+                navItem.firstElementChild.classList.add('active')
+        })
+    }
+
     /* ----------------------------------------
     AddIdeaLogic() overview
     - Checks for existing userData in displayIdeas() with localStorage
@@ -100,6 +110,8 @@ class AddIdeaPage extends HTMLElement {
             let cell1 = row.insertCell(0)
             let cell2 = row.insertCell(1)
             let cell3 = row.insertCell(2)
+            let cell4 = row.insertCell(3)
+            cell4.innerHTML = `<div class="delete-idea-btn">x</div>`
             cell1.innerHTML = name
             cell2.innerHTML = date
             cell3.innerHTML = `<label class="${category} category-options">${category}</label>`
@@ -109,7 +121,7 @@ class AddIdeaPage extends HTMLElement {
 
     connectedCallback() {
         this.render();
-    
+        this.setActiveTab();
         this.addIdeaLogic();
     }
 
@@ -125,7 +137,7 @@ class AddIdeaPage extends HTMLElement {
                             <div class="split">
                                 <div class="form-space">
                                     <h3>
-                                        <label for="event-name">Event name:</label>
+                                        <label for="event-name">Idea:</label>
                                     </h3>
 
                                     <input autofocus class="form-input" type="text" name="event-name" id="event-name"
@@ -177,11 +189,15 @@ class AddIdeaPage extends HTMLElement {
 
                 <!--Stored Ideas-->
                 <section class="card idea-container">
-                    <h2 class="text-center">Your current ideas:</h2>
+                    <div>
+                        <h2 class="text-center">Your ideas:</h2>
+                        <h2 class="text-center">Filter by category<h2>
+                    </div>
+                    
 
                     <table class="idea-table">
                         <tr>
-                            <th>Event</th>
+                            <th>Idea</th>
                             <th>Date</th>
                             <th>Category</th>
                         </tr>

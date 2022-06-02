@@ -4,6 +4,16 @@ class GetIdeaPage extends HTMLElement {
         this.ideas = [];
     }
 
+    setActiveTab(){
+        // Nav tab underline on current page
+        const navItems = document.querySelectorAll('.nav-item')
+        
+        navItems.forEach( navItem => {
+            if(navItem.firstElementChild.innerHTML === 'Get Idea')
+                navItem.firstElementChild.classList.add('active')
+        })
+    }
+
     startGetIdea() {
         const popupOverlay = document.querySelector(".popup-overlay");
         const popupContent = document.querySelector(".popup-content");
@@ -125,6 +135,7 @@ class GetIdeaPage extends HTMLElement {
         this.render();
         await this.GetIdeas();
         this.render();
+        this.setActiveTab();
         this.startGetIdea();
     }
 
