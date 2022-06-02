@@ -868,13 +868,20 @@ input[type="radio"]:focus {
   margin-bottom: 1.5rem;
 }
 
+.table-header {
+  display: flex;
+  justify-content: space-around;
+}
+
 td {
   border: 1px solid;
   border-collapse: collapse;
   text-align: center;
 }
 
-
+td:nth-child(4) {
+  border: none;
+}
 
 .delete-idea-btn {
   display: flex;
@@ -888,6 +895,8 @@ td {
   cursor: pointer;
   margin-left: .5rem;
 }
+
+.delete-idea-btn:hover {background: var(--nav-btn-hover);}
 
 /*---------------------
     login-signup.html

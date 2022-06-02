@@ -44,7 +44,7 @@ class AddIdeaPage extends HTMLElement {
         let addIdeaForm = document.getElementById('add-idea-form');
         console.log('test', addIdeaForm)
 
-
+        // Form submit handler
         addIdeaForm.addEventListener('submit', (event) =>  {
             event.preventDefault() // Stops form reload on submit
             
@@ -77,16 +77,56 @@ class AddIdeaPage extends HTMLElement {
             
                 // Update idea table
                 createRow(idea.name, idea.date, idea.category)
+
+                // User Feedback
+                setFormMessage( "success", "Idea added")
             
                 // Animate jar shake
                 let jar = document.querySelector('.jar')
                 jar.classList.add('jar-shake')
             }
             else {
-                console.log("Add an idea first")
-                setFormMessage( "error", "Add an idea first")
+                if(checkedRadio === "") {
+                    setFormMessage( "error", "Select a category")
+                }
+                else {
+                    setFormMessage( "error", "Add an idea first")
+                }
+                
             }
         })
+
+        // Delete row functionality
+        const deleteBtnGroup = document.querySelectorAll('.delete-idea-btn')
+        
+        deleteBtnGroup.forEach (deleteBtn => {
+            deleteBtn.addEventListener('click', (event) =>{
+                // Select whole row of selected
+                let td = event.target.parentNode
+                let tr = td.parentNode
+
+                // Get string of deleted idea
+                let deletedIdea = tr.firstElementChild.innerHTML
+
+                // Deletes table row
+                tr.parentNode.removeChild(tr)
+
+                // Deletes entry in localStorage
+                let indexFound = 0
+                for(let i = 0; i < userData.ideas.length; i++) {
+                    if( deletedIdea === userData.ideas[i].name) {
+                        indexFound = i
+                        console.log(`a match was found @ ${i}`)
+                    }
+                }
+                let newUserData = userData.ideas.splice(indexFound, 1)
+                console.log(newUserData)
+                console.log(userData)
+                // Push new userData to localStorage
+                localStorage.setItem('myIdeaList', JSON.stringify(userData) )
+            })
+        })
+
         function setFormMessage( type, message) {
             const messageElement = document.querySelector('.form-message')
             messageElement.textContent = message
@@ -117,6 +157,7 @@ class AddIdeaPage extends HTMLElement {
             cell3.innerHTML = `<label class="${category} category-options">${category}</label>`
             ideaTable.appendChild(row)
         }
+        
     }
 
     connectedCallback() {
@@ -189,7 +230,7 @@ class AddIdeaPage extends HTMLElement {
 
                 <!--Stored Ideas-->
                 <section class="card idea-container">
-                    <div>
+                    <div class="table-header">
                         <h2 class="text-center">Your ideas:</h2>
                         <h2 class="text-center">Filter by category<h2>
                     </div>
