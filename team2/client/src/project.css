@@ -980,6 +980,7 @@ td:nth-child(4) {
     Nav
 ---------------------*/
 nav {
+  background: rgba(123, 136, 209, .9);
   transition: .5s;
   position: fixed;
   top: 0;
@@ -1062,10 +1063,10 @@ nav .container {
 }
 
 #profile-menu {
-  border: 1px solid rgb(121, 121, 121);
+  background: rgba(123, 136, 209, .9);
   position: absolute;
   top: 74px;
-  left: 80%;
+  right: 0%;
   color: #fff;
   padding: 15px;
   transition: .2s;
@@ -1091,6 +1092,27 @@ nav .container {
 
 
 @media (max-width: 810px) {
+  .profile-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: baseline;
+    align-items: center;
+  }
+  #profile-menu {
+    position: absolute;
+    top: 0px;
+    opacity: 0;
+  }
+  
+  #profile-menu.active {
+    position: static;
+    opacity: 1;
+  }
+  
+  #profile-menu li {
+    padding: 1rem;
+  }
+  
   .nav-list {
     position: fixed;
     left: 0;

@@ -35,6 +35,7 @@ class Navigation extends HTMLElement {
         })
 
         // Add background to Navbar on scroll
+        /*
         const nav = document.querySelector('nav')
         window.onscroll = () => {
             if(document.body.scrollTop > 30 || document.documentElement.scrollTop > 30) {
@@ -46,6 +47,7 @@ class Navigation extends HTMLElement {
                 profileMenu.style.background = 'none'
             }
         }
+        */
     }
 
     // TODO: Ariel--Work in progress
@@ -82,8 +84,16 @@ class Navigation extends HTMLElement {
         })
 
         result += `
-            <li>
+            <li class="profile-content">
                 <a class="nav-btn" id="profile-icon">J</a>
+                <ul id="profile-menu">
+                        <li>
+                            Settings
+                        </li>
+                        <li>
+                            <a class="nav-btn" href="./login-signup.html" id="logout">Logout</a>
+                        </li>
+                    </ul>
             </li>
         `
         return result;
@@ -105,14 +115,7 @@ class Navigation extends HTMLElement {
                         <span></span>
                         <span></span>
                     </div>
-                    <ul id="profile-menu">
-                        <li>
-                            Settings
-                        </li>
-                        <li>
-                            <a class="nav-btn" href="./login-signup.html" id="logout">Logout</a>
-                        </li>
-                    </ul>
+                    
                     <ul class="nav-list">
                         <li class="nav-item">
                             <a href="./index.html">Home</a>

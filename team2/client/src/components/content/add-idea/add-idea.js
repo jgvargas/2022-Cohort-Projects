@@ -40,11 +40,38 @@ class AddIdeaPage extends HTMLElement {
         // Populate data on page if data is present
         displayIdeas()
 
-        // Call function addIdea on form-btn submit
-        let addIdeaForm = document.getElementById('add-idea-form');
-        console.log('test', addIdeaForm)
+        // Delete row functionality
+        let deleteBtnGroup = document.querySelectorAll('.delete-idea-btn')
+        deleteBtnGroup.forEach (deleteBtn => {
+            deleteBtn.addEventListener('click', (event) =>{
+                console.log("deleteButton was clicked")
+                // Select whole row of selected
+                let td = event.target.parentNode
+                let tr = td.parentNode
 
-        // Form submit handler
+                // Get string of deleted idea
+                let deletedIdea = tr.firstElementChild.innerHTML
+
+                // Deletes table row
+                tr.parentNode.removeChild(tr)
+
+                // Deletes entry in localStorage
+                let indexFound = 0
+                for(let i = 0; i < userData.ideas.length; i++) {
+                    if( deletedIdea === userData.ideas[i].name)
+                        indexFound = i
+                }
+                let newUserData = userData.ideas.splice(indexFound, 1)
+                console.log(newUserData)
+                console.log(userData)
+                // Push new userData to localStorage
+                localStorage.setItem('myIdeaList', JSON.stringify(userData) )
+            })
+        })
+
+
+        // Form submit handler, call function addIdea on form-btn submit
+        let addIdeaForm = document.getElementById('add-idea-form');
         addIdeaForm.addEventListener('submit', (event) =>  {
             event.preventDefault() // Stops form reload on submit
             
@@ -65,7 +92,7 @@ class AddIdeaPage extends HTMLElement {
                 let idea = {
                     id: Date.now(),
                     name: document.getElementById('event-name').value,
-                    date: document.getElementById('event-date').value,
+                    date: formatDateString(document.getElementById('event-date').value),
                     category: checkedRadio
                 }
                 userData.ideas.push(idea)
@@ -84,47 +111,17 @@ class AddIdeaPage extends HTMLElement {
                 // Animate jar shake
                 let jar = document.querySelector('.jar')
                 jar.classList.add('jar-shake')
+
+                // Update the deleteBtnGroup for the new entry
+                deleteBtnGroup = document.querySelectorAll('.delete-idea-btn')
+                console.log(deleteBtnGroup)
             }
             else {
-                if(checkedRadio === "") {
+                if(checkedRadio === "")
                     setFormMessage( "error", "Select a category")
-                }
-                else {
+                else
                     setFormMessage( "error", "Add an idea first")
-                }
-                
             }
-        })
-
-        // Delete row functionality
-        const deleteBtnGroup = document.querySelectorAll('.delete-idea-btn')
-        
-        deleteBtnGroup.forEach (deleteBtn => {
-            deleteBtn.addEventListener('click', (event) =>{
-                // Select whole row of selected
-                let td = event.target.parentNode
-                let tr = td.parentNode
-
-                // Get string of deleted idea
-                let deletedIdea = tr.firstElementChild.innerHTML
-
-                // Deletes table row
-                tr.parentNode.removeChild(tr)
-
-                // Deletes entry in localStorage
-                let indexFound = 0
-                for(let i = 0; i < userData.ideas.length; i++) {
-                    if( deletedIdea === userData.ideas[i].name) {
-                        indexFound = i
-                        console.log(`a match was found @ ${i}`)
-                    }
-                }
-                let newUserData = userData.ideas.splice(indexFound, 1)
-                console.log(newUserData)
-                console.log(userData)
-                // Push new userData to localStorage
-                localStorage.setItem('myIdeaList', JSON.stringify(userData) )
-            })
         })
 
         function setFormMessage( type, message) {
@@ -157,7 +154,39 @@ class AddIdeaPage extends HTMLElement {
             cell3.innerHTML = `<label class="${category} category-options">${category}</label>`
             ideaTable.appendChild(row)
         }
-        
+
+        function formatDateString(oldDateString) {
+            // Changes string date from YYYY-DD-MM to Month DD, YYYY
+            let tokens = oldDateString.split('-')
+            let newString = ''
+            if(tokens[1] === '01')
+                newString = "January"
+            else if(tokens[1] === '02')
+                newString = 'February'
+            else if(tokens[1] === '03')
+                newString = 'March'
+            else if(tokens[1] === '04')
+                newString = 'April'
+            else if(tokens[1] === '05')
+                newString = 'May'
+            else if(tokens[1] === '06')
+                newString = 'June'
+            else if(tokens[1] === '07')
+                newString = 'July'
+            else if(tokens[1] === '08')
+                newString = 'August'
+            else if(tokens[1] === '09')
+                newString = 'September'
+            else if(tokens[1] === '10')
+                newString = 'October'
+            else if(tokens[1] === '11')
+                newString = 'November'
+            else
+                newString = 'December'
+            
+            newString += ` ${tokens[2]}, ${tokens[0]}`
+            return newString
+        } 
     }
 
     connectedCallback() {
