@@ -1,0 +1,37 @@
+{
+  "Version": 1,
+  "Hash": "4erDyQxi4VBJmsSDAi1WbxInxoYMMeo6R9LDstJ9Zb8=",
+  "Source": "WebAPI",
+  "BasePath": "_content/WebAPI",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [
+    {
+      "Name": "WebAPI\\wwwroot",
+      "Source": "WebAPI",
+      "ContentRoot": "C:\\Users\\Ariel\\Desktop\\New folder\\2022-Cohort-Projects\\team2\\server\\IdeaJarAPI\\WebAPI\\wwwroot\\",
+      "BasePath": "_content/WebAPI",
+      "Pattern": "**"
+    }
+  ],
+  "Assets": [
+    {
+      "Identity": "C:\\Users\\Ariel\\Desktop\\New folder\\2022-Cohort-Projects\\team2\\server\\IdeaJarAPI\\WebAPI\\wwwroot\\confirmemail.html",
+      "SourceId": "WebAPI",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\Ariel\\Desktop\\New folder\\2022-Cohort-Projects\\team2\\server\\IdeaJarAPI\\WebAPI\\wwwroot\\",
+      "BasePath": "_content/WebAPI",
+      "RelativePath": "confirmemail.html",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\confirmemail.html"
+    }
+  ]
+}
