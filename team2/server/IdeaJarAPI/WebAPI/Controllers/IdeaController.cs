@@ -51,6 +51,14 @@ namespace WebAPI.Controllers {
         }
 
 
+        [HttpGet("GetRandomIdea")]
+        public async Task<IActionResult> GetRandomIdea() => Ok(await _context.Ideas.OrderBy(x => Guid.NewGuid()).FirstAsync());
+
+
+        [HttpGet("GetRandomIdeaByCategory/{id}")]
+        public async Task<IActionResult> GetRandomIdeaByCategory(int id) => Ok(await _context.Ideas.Where(x => x.CategoryId == id && x.CategoryId != 1).FirstOrDefaultAsync());
+
+
         [HttpPost("DeleteIdea")]
         public async Task<IActionResult> DeleteIdea([FromBody] IdeaDTO model) {
             if (!ModelState.IsValid) {
