@@ -1,10 +1,8 @@
 ﻿using WebAPI.DTOs;
 using WebAPI.Models;
 
-namespace WebAPI.Services
-{
-    public interface IUserService
-    {
+namespace WebAPI.Services {
+    public interface IUserService {
         Task<UserManagerResponseDTO> RegisterUser(RegisterDTO registerDTO);
 
         Task<UserManagerResponseDTO> LoginUser(LoginDTO loginDTO);

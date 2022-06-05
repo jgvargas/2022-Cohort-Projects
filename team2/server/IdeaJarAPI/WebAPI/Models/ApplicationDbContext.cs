@@ -1,14 +1,20 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace WebAPI.Models
-{
-    public class ApplicationDbContext : IdentityDbContext
-    {
+namespace WebAPI.Models {
+
+
+    public class ApplicationDbContext : IdentityDbContext {
+
+
         public ApplicationDbContext(DbContextOptions options) : base(options) { }
 
-#pragma warning disable CS0114 // Member hides inherited member; missing override keyword
-        public DbSet<User> Users { get; set; }
-#pragma warning restore CS0114 // Member hides inherited member; missing override keyword
+
+
+        public DbSet<Category> Categories { get; set; }
+
+
+        public DbSet<Idea> Ideas { get; set; }
+
     }
 }
