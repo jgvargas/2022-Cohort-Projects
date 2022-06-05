@@ -87,7 +87,6 @@ using (var scope = app.Services.CreateScope()) {
     
     var seeder = services.GetService<DataSeeder>();
     seeder.Seed();
-    //DbInitializer.Initialize(context);
 }
 
 // Configure the HTTP request pipeline.

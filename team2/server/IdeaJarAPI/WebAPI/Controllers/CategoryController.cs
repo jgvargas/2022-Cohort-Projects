@@ -18,7 +18,7 @@ namespace WebAPI.Controllers {
 
 
         [HttpGet("GetAll")]
-        public async Task<IActionResult> Index() => Ok(await _context.Categories.ToListAsync());
+        public async Task<IActionResult> GetAll() => Ok(await _context.Categories.ToListAsync());
 
     }
 }
