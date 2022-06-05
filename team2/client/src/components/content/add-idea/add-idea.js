@@ -1,6 +1,8 @@
 class AddIdeaPage extends HTMLElement {
     constructor() {
         super();
+        this.categories = [],
+        this.ideas = []
     }
 
     setActiveTab() {
@@ -189,11 +191,100 @@ class AddIdeaPage extends HTMLElement {
         } 
     }
 
-    connectedCallback() {
+
+    async GetCategories() {
+        var requestOptions = {
+            method: 'GET',
+            mode: 'cors',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        };
+        await fetch(`https://idea-jar-api.herokuapp.com/Api/Category/GetAll`, requestOptions)
+        .then(response => response.json())
+        .then(data => {
+            console.log(data)
+            data.forEach(category => this.categories.push(category));  
+        })
+        .catch(error => console.log(error));
+
         this.render();
+    }
+
+
+    renderCategories() {
+        var result = "";
+
+        this.categories.forEach(x => {
+            result += `
+            <input type="radio" id="${x.categoryClassName}-btn" name="${x.categoryName}" value="${x.categoryClassName}" />
+            <label class="${x.categoryClassName} category-options" for="${x.categoryClassName}-btn">${x.categoryName}</label>
+            `;
+        });
+        
+        return result;
+    }
+
+
+    async GetIdeas(){
+        var requestOptions = {
+            method: 'GET',
+            mode: 'cors',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        };
+        await fetch(`https://idea-jar-api.herokuapp.com/Api/Idea/GetAll`, requestOptions)
+        .then(response => response.json())
+        .then(data => {
+            data.forEach(idea => this.ideas.push(idea));  
+        })
+        .catch(error => console.log(error));
+
+        this.render();
+    }
+
+
+    renderIdeas() {
+        var result = `
+        <tr>
+            <th>Idea</th>
+            <th>Date</th>
+            <th>Category</th>
+        </tr>`;
+
+        this.ideas.forEach(idea => {
+            var date = new Date(idea.date).toDateString();
+            var category;
+
+            for (var i = 0; i < this.categories.length; i++){
+                if (this.categories[i].id == idea.categoryId){
+                    category = this.categories[i].categoryName;
+                    break;
+                }
+            }
+
+            result += `
+            <tr>
+                <td>${idea.ideaName}</td>
+                <td>${date}</td>
+                <td>${category}</td>
+            </tr>
+            `;
+        });
+
+        return result
+    }
+
+
+    async connectedCallback() {
+        this.render();
+        await this.GetCategories();
+        await this.GetIdeas();
         this.setActiveTab();
         this.addIdeaLogic();
     }
+    
 
     render() {
         this.innerHTML = `
@@ -229,23 +320,7 @@ class AddIdeaPage extends HTMLElement {
                                         <label for="category">Category:</label>
                                     </h3>
 
-                                    <input type="radio" id="stay-home-btn" name="category" value="stay-home" />
-                                    <label class="stay-home category-options" for="stay-home-btn">Stay Home</label>
-
-                                    <input type="radio" id="restaurant-btn" name="category" value="restaurant" />
-                                    <label class="restaurant category-options" for="restaurant-btn">Restaurant</label>
-
-                                    <input type="radio" id="road-trip-btn" name="category" value="road-trip" />
-                                    <label class="road-trip category-options" for="road-trip-btn">Road Trip</label>
-
-                                    <input type="radio" id="indoors-btn" name="category" value="indoor" />
-                                    <label class="indoor category-options" for="indoors-btn">Indoors</label>
-
-                                    <input type="radio" id="outdoors-btn" name="category" value="outdoor" />
-                                    <label class="outdoor category-options" for="outdoors-btn">Outdoors</label>
-
-                                    <input type="radio" id="other-btn" name="category" value="other" />
-                                    <label class="other category-options" for="other-btn">Other</label>
+                                    ${this.categories.length == 0 ? `<h1>Loading</h1>` : this.renderCategories()}
                                 </div>
                             </div>
                             <input type="submit" value="Submit" class="form-btn" />
@@ -266,12 +341,7 @@ class AddIdeaPage extends HTMLElement {
                     
 
                     <table class="idea-table">
-                        <tr>
-                            <th>Idea</th>
-                            <th>Date</th>
-                            <th>Category</th>
-                        </tr>
-
+                        ${this.ideas.length == 0 ? `<h1>Loading</h1>` : this.renderIdeas()}
                     </table>
 
                 </section>

@@ -1,7 +1,7 @@
 class GetIdeaPage extends HTMLElement {
     constructor() {
         super();
-        this.ideas = [];
+        this.categories = [];
     }
 
     setActiveTab(){
@@ -104,7 +104,7 @@ class GetIdeaPage extends HTMLElement {
         }
     }
 
-    async GetIdeas() {
+    async GetCategories() {
         var requestOptions = {
             method: 'GET',
             mode: 'cors',
@@ -112,20 +112,19 @@ class GetIdeaPage extends HTMLElement {
                 'Content-Type': 'application/json',
             },
         };
-        await fetch(`https://idea-jar-api.herokuapp.com/Api/Idea/GetAll`, requestOptions)
+        await fetch(`https://idea-jar-api.herokuapp.com/Api/Category/GetAll`, requestOptions)
         .then(response => response.json())
         .then(data => {
-            data.forEach(idea => this.ideas.push(idea));  
+            data.forEach(category => this.categories.push(category));  
         })
         .catch(error => console.log(error));
     }
 
-    renderIdeas() {
+    renderCategories() {
         var result = "";
 
-        this.ideas.forEach(x => {
-            // class needs to be dynamic
-            result += `<button class="road-trip open shake">${x}</button>`;
+        this.categories.forEach(x => {
+            result += `<button class="${x.categoryClassName} open shake">${x.categoryName}</button>`;
         });
         
         return result;
@@ -133,7 +132,7 @@ class GetIdeaPage extends HTMLElement {
 
     async connectedCallback() {
         this.render();
-        await this.GetIdeas();
+        await this.GetCategories();
         this.render();
         this.setActiveTab();
         this.startGetIdea();
@@ -150,7 +149,7 @@ class GetIdeaPage extends HTMLElement {
                         <img src="./src/img/jar_2.png" id="jar" alt="jar with colored paper slips"></img>
                     </div>
                     <section class="activity-buttons">
-                        ${this.ideas.length == 0 ? `<h1>Loading</h1>` : this.renderIdeas()}
+                        ${this.categories.length == 0 ? `<h1>Loading</h1>` : this.renderCategories()}
                     </section>
                 </div>
                 <!--Creates the popup body-->
