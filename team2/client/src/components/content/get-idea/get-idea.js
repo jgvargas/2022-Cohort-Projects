@@ -14,95 +14,90 @@ class GetIdeaPage extends HTMLElement {
         })
     }
 
-    startGetIdea() {
-        const popupOverlay = document.querySelector(".popup-overlay");
-        const popupContent = document.querySelector(".popup-content");
 
-        /* modal on get idea */
-        Array.from(document.querySelectorAll(".open")).forEach(button => {
-            button.addEventListener("click", (event) => {
-                let chosenCategory = event.target.classList[0]
+    loadOpenModal() {
+        var buttons = document.getElementsByClassName('open shake');
 
-                //adds shake animation to the jar via class, and then removes and brings up popup
-                const jar = document.querySelector("#jar");
-                jar.classList.add("jarShake")
+        for (var btn of buttons) {
+            btn.addEventListener('click', async (event) => {
+                var id = event.target.value;
+
+                const popupOverlay = document.querySelector(".popup-overlay");
+                const popupContent = document.querySelector(".popup-content");
+                const jar = document.querySelector('#jar');
+                
+                jar.classList.add('jarShake');
+
+                var idea = await this.getIdea(id);
+                this.setModalProps(idea);
+                
                 setTimeout(() => {
-                    jar.classList.remove("jarShake")
-                    popupOverlay.classList.add("active")
-                    popupContent.classList.add("active")
-                }, 1500)
+                    jar.classList.remove("jarShake");
+                    popupOverlay.classList.add("active");
+                    popupContent.classList.add("active");
+                }, 250);
 
-                getIdea(chosenCategory)
+                [document.querySelector(".close"), popupOverlay].forEach(btn => {
+                    btn.addEventListener("click", () => {
+                        popupOverlay.classList.remove("active");
+                        popupContent.classList.remove("active");
+        
+                    })
+                });
+
             });
-        });
-
-        //closes popup via close btn or overlay
-        [document.querySelector(".close"), popupOverlay].forEach(btn => {
-            btn.addEventListener("click", () => {
-                popupOverlay.classList.remove("active");
-                popupContent.classList.remove("active");
-
-            })
-        })
-
-        userData = JSON.parse(localStorage.getItem('myIdeaList'));
-        popUpWindow = document.querySelector(".popup-content > h2");
-
-
-        function getIdea(chosenCategory) {
-            //reset optional data fields
-            document.querySelector(".popup-url").innerText = "";
-            document.querySelector(".popup-date").innerText = "";
-
-            if (!userData || !userData.ideas.length) {
-                popUpWindow.innerText = "You have no activities in your idea jar!";
-                return
-            }
-
-            let ideasInCategory = userData.ideas.filter(idea => idea.category == chosenCategory);
-
-
-            if (chosenCategory == "other") {
-                ideasInCategory = userData.ideas;
-            }
-
-            //validates user choice and provides feedback
-            if (!ideasInCategory.length) {
-                popUpWindow.innerText = "You have no activities in this category";
-                return
-            }
-
-            //stores random idea data so it can be used to delete idea
-            let randomIdea = generateRandomIdea(ideasInCategory);
-
-            //button to remove idea from jar
-            document.querySelector(".removeIdea").addEventListener("click", () => removeIdeaFromJar(randomIdea));
         }
 
-        //removes the chosen idea from the idea jar user data
-        function removeIdeaFromJar(chosenIdea) {
-            //Revises idea list and Adds updated userData to localstorage
-            let revisedIdeaList = userData.ideas.filter(idea => idea.id !== chosenIdea.id)
-            userData.ideas = revisedIdeaList
-            localStorage.setItem('myIdeaList', JSON.stringify(userData))
-        }
 
-        //generates a random index and uses it to pick a random idea
-        function generateRandomIdea(ideasInCategory) {
-            let randomIdeaIndex = Math.floor(Math.random() * ideasInCategory.length);
-            let randomIdea = ideasInCategory[randomIdeaIndex];
-
-
-            popUpWindow.innerText = randomIdea.name;
-            if (randomIdea.URL) {
-                document.querySelector(".popup-url").innerText = randomIdea.URL;
-            }
-            if (randomIdea.date) {
-                document.querySelector(".popup-date").innerText = `Date: ${randomIdea.date}`;
-            }
-            return randomIdea
-        }
     }
+
+
+    async getIdea(id) {
+        const randomIdeaUrl = "https://idea-jar-api.herokuapp.com/Api/Idea/GetRandomIdea";
+        const randomIdeaByCategory = `https://idea-jar-api.herokuapp.com/Api/Idea/GetRandomIdeaByCategory/${id}`;
+
+        var result;
+
+        var requestOptions = {
+            method: 'GET',
+            mode: 'cors',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        };
+
+        async function fetchCall(url) {
+            console.log(url)
+            await fetch(url, requestOptions)
+            .then(response => response.json())
+            .then(data => {
+                result = data
+            })
+            .catch(error => {
+                console.log(error)
+            });
+        }
+
+        if (id == 1) {
+            await fetchCall(randomIdeaUrl);
+        } else {
+            await fetchCall(randomIdeaByCategory);
+        }
+
+        return result;
+    }
+
+
+    setModalProps(idea) {
+        var name = idea.ideaName;
+        var date = new Date(idea.date).toDateString();
+
+        document.querySelector(".popup-content > h2").textContent = name;
+        document.querySelector(".popup-content > .popup-date").textContent = date;
+        
+        console.log(idea)
+    }
+
 
     async GetCategories() {
         var requestOptions = {
@@ -124,18 +119,24 @@ class GetIdeaPage extends HTMLElement {
         var result = "";
 
         this.categories.forEach(x => {
-            result += `<button class="${x.categoryClassName} open shake">${x.categoryName}</button>`;
+            result += `
+            <button 
+                class="${x.categoryClassName} open shake" 
+                value="${x.id}"
+            >
+                ${x.categoryName}
+            </button>`;
         });
         
         return result;
     }
 
     async connectedCallback() {
+        this.setActiveTab();
         this.render();
         await this.GetCategories();
         this.render();
-        this.setActiveTab();
-        this.startGetIdea();
+        this.loadOpenModal();
     }
 
     render() {
@@ -156,9 +157,8 @@ class GetIdeaPage extends HTMLElement {
                 <div class="containerModal">
                     <div class="popup-overlay">
                         <!--Creates the popup content-->
-                        <div class="popup-content">
-                            <h2>I'M SO EXCITED THE POP-UP WORKS!!!!</h2>
-                            <h3 class="popup-url"></h3>
+                            <div class="popup-content">
+                            <h2></h2>
                             <h3 class="popup-date"></h3>
                             <!--popup's close button-->
                             <div class="popup-btn-container">
