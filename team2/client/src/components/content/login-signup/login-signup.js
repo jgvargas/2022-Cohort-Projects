@@ -156,9 +156,19 @@ class LoginSignUpPage extends HTMLElement {
                 autofocus 
                 type="text" 
                 name="" 
-                id="createUsername">
+                id="createUsername"
+            >
             <div class="form-message"></div>
         </div>
+        <div class="form-input-group">
+                <input 
+                    type="text" 
+                    class="form-input"
+                    autofocus 
+                    placeholder="Email"
+                >
+                <div class="form-message"></div>
+            </div>
         <!--Create password-->
         <div class="form-input-group">
             <div class="text-center form-message">Use at least one number and symbol @ # ! $</div>

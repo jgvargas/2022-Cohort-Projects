@@ -50,10 +50,10 @@ class IndexPage extends HTMLElement {
                         <div class="headerWrap">
                             <div class="headerText">
                             <h1 class="section-header">
-                                What do you want to do today?
+                                What will you do today?
                             </h1>
                             <p class="section-text">
-                                In a busy world of possibilities it can be hard to choose. Let <a href="#sign-up" class="idea-jar-ref">Idea Jar</a> help! 
+                                In a busy world of possibilities it can be hard to choose. Let <a href="#sign-up" class="idea-jar-ref"><em>Idea Jar<em></a> help! 
                             </p>
                         </div>
                         
@@ -112,11 +112,11 @@ class IndexPage extends HTMLElement {
                                 <section class="containerExplain">
 
                                     <section>
-                                        <div class="putIdeaExplain outdoor">Add an Idea</div>
+                                        <div class="putIdeaExplain outdoors">Add an Idea</div>
                                         <p>Add resturants and fun activities when you learn about them.</p>
                                     </section>
                                     <section>
-                                        <div class="takeIdeaExplain indoor">Get an Idea</div>
+                                        <div class="takeIdeaExplain indoors">Get an Idea</div>
                                         <p>Have <a href="#sign-up" class="idea-jar-ref">Idea Jar</a> randomly select from the ideas
                                             you've entered</p>
                                     </section>

@@ -70,6 +70,10 @@ img {
   max-width: 100%;
 }
 
+a {
+  text-decoration: none;
+}
+
 .contentWrap {
   flex: 1 0 auto;
 }
@@ -121,11 +125,11 @@ img {
   background-color: var(--tag-yellow);
 }
 
-.indoor {
+.indoors {
   background-color: var(--tag-pink);
 }
 
-.outdoor {
+.outdoors {
   background-color: var(--header-footer-color);
 }
 

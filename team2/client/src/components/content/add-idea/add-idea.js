@@ -6,7 +6,6 @@ class AddIdeaPage extends HTMLElement {
     }
 
 
-
     setActiveTab() {
         // Nav tab underline on current page
         const navItems = document.querySelectorAll('.nav-item')
@@ -71,6 +70,7 @@ class AddIdeaPage extends HTMLElement {
         .then(response => response.json())
         .then(data => {
             this.ideas = data;
+            console.log(this.ideas)
         })
         .catch(error => console.log(error));
     }
@@ -87,10 +87,15 @@ class AddIdeaPage extends HTMLElement {
         this.ideas.forEach(idea => {
             var date = new Date(idea.date).toDateString();
             var categoryName;
+            let categoryLabel;
 
             for (var category of this.categories){
                 if (category.id == idea.categoryId){
                     categoryName = category.categoryName;
+                    
+                    categoryLabel = categoryName.toLowerCase().replace(" ", "-");
+                    console.log(categoryName, categoryLabel)
+
                     break;
                 }
             }
@@ -99,7 +104,7 @@ class AddIdeaPage extends HTMLElement {
             <tr>
                 <td>${idea.ideaName}</td>
                 <td>${date}</td>
-                <td>${categoryName}</td>
+                <td><label class="${categoryLabel} category-options">${categoryName}</label></td>
             </tr>
             `;
         });
