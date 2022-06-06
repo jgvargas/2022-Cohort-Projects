@@ -629,6 +629,14 @@ main ul {
 .popup-overlay {
   /*Hides pop-up when there is no "active" class*/
   visibility: hidden;
+  position: absolute;
+  top: 30%;
+  background: var(--tag-pink);
+  border: 3px solid black;
+  width: 50%;
+  height: 50%;
+  left: 25%;
+  min-height: 300px;
 }
 
 .popup-overlay.active {
@@ -720,6 +728,10 @@ main ul {
   .popup-btn-container {
     flex-direction: column;
     align-items: center;
+  }
+
+  .popup-overlay{
+    min-height: 450px;
   }
 }
 

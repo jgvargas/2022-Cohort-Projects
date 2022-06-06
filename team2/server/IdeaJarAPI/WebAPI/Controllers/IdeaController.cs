@@ -56,7 +56,7 @@ namespace WebAPI.Controllers {
 
 
         [HttpGet("GetRandomIdeaByCategory/{id}")]
-        public async Task<IActionResult> GetRandomIdeaByCategory(int id) => Ok(await _context.Ideas.Where(x => x.CategoryId == id && x.CategoryId != 1).FirstOrDefaultAsync());
+        public async Task<IActionResult> GetRandomIdeaByCategory(int id) => Ok(await _context.Ideas.Where(x => x.CategoryId == id && x.CategoryId != 1).OrderBy(x => Guid.NewGuid()).FirstAsync());
 
 
         [HttpPost("DeleteIdea")]
