@@ -1,9 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace WebAPI.DTOs
-{
-    public class RegisterDTO
-    {
+namespace WebAPI.DTOs {
+    public class RegisterDTO {
         [Required]
         [StringLength(50)]
         public string Username { get; set; }

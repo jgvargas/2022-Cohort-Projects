@@ -25,6 +25,14 @@ class IndexPage extends HTMLElement {
                 }
             }
         }
+
+        // Nav tab underline on current page
+        const navItems = document.querySelectorAll('.nav-item')
+        
+        navItems.forEach( navItem => {
+            if(navItem.firstElementChild.innerHTML === 'Home')
+                navItem.firstElementChild.classList.add('active')
+        })
     }
 
     connectedCallback() {

@@ -1,117 +1,162 @@
 class AddIdeaPage extends HTMLElement {
     constructor() {
         super();
+        this.categories = [],
+        this.ideas = null
     }
 
-    /* ----------------------------------------
-    AddIdeaLogic() overview
-    - Checks for existing userData in displayIdeas() with localStorage
-        - If present populate table with AddIdea() and createRow()
-    - User submits idea and calls addIdea()
-        - Jar is animated startJar()
-
-    TODO: 
-    - Validate form data before storing
-    - Change date to dd-mm-yy
-    --------------------------------------------*/
-    addIdeaLogic() {
-        // Import user data if previously submitted
-        let userData = {}
-        userData = JSON.parse(localStorage.getItem('myIdeaList'))
-
-        if (!userData) {
-            userData = {
-                userId: 1,
-                userName: 'Default',
-                ideas: []
-            }
-        }
-
-        // Populate data on page if data is present
-        displayIdeas()
-
-        // Call function addIdea on form-btn submit
-        let addIdeaForm = document.getElementById('add-idea-form');
-        console.log('test', addIdeaForm)
 
 
-        addIdeaForm.addEventListener('submit', (event) =>  {
-            event.preventDefault() // Stops form reload on submit
-            
-            // Get radio input
-            let checkedRadio = ''
-            let radioElements = document.getElementsByName('category')
+    setActiveTab() {
+        // Nav tab underline on current page
+        const navItems = document.querySelectorAll('.nav-item')
         
-            for (let i = 0; i < radioElements.length; i++) {
-                if (radioElements[i].checked) {
-                    // incomplete
-                    console.log(radioElements[i].value)
-                    checkedRadio = radioElements[i].value
-                }
-            }
-        
-            // Validate input 
-            if (document.getElementById('event-name').value && checkedRadio != "") {
-                let idea = {
-                    id: Date.now(),
-                    name: document.getElementById('event-name').value,
-                    date: document.getElementById('event-date').value,
-                    category: checkedRadio
-                }
-                userData.ideas.push(idea)
-            
-                document.querySelector('form').reset()
-            
-                // Add updated userData to localstorage
-                localStorage.setItem('myIdeaList', JSON.stringify(userData))
-            
-                // Update idea table
-                createRow(idea.name, idea.date, idea.category)
-            
-                // Animate jar shake
-                let jar = document.querySelector('.jar')
-                jar.classList.add('jar-shake')
-            }
-            else {
-                console.log("Add an idea first")
-                setFormMessage( "error", "Add an idea first")
-            }
+        navItems.forEach( navItem => {
+            if(navItem.firstElementChild.innerHTML === 'Add Idea')
+                navItem.firstElementChild.classList.add('active')
         })
-        function setFormMessage( type, message) {
-            const messageElement = document.querySelector('.form-message')
-            messageElement.textContent = message
-            messageElement.classList.remove('form-message-error', 'form-message-success')
-            messageElement.classList.add(`form-message-${type}`)
-        }
+    }
 
-        function displayIdeas() {
-            let ideaArray = userData.ideas
 
-            // Creates a table row for every existing idea entry
-            for (let i = 0; i < ideaArray.length; i++) {
-                createRow(ideaArray[i].name, ideaArray[i].date, ideaArray[i].category)
+    async GetCategories() {
+        var requestOptions = {
+            method: 'GET',
+            mode: 'cors',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        };
+        await fetch(`https://idea-jar-api.herokuapp.com/Api/Category/GetAll`, requestOptions)
+        .then(response => response.json())
+        .then(data => {
+            data.forEach(category => this.categories.push(category));  
+        })
+        .catch(error => console.log(error));
+    }
+
+
+    renderCategories() {
+        var result = "";
+
+        this.categories.forEach(x => {
+            result += `
+            <input 
+                type="radio" 
+                id="${x.categoryClassName}-btn" 
+                name="category-selection" 
+                value="${x.id}"
+            />
+            <label 
+                class="${x.categoryClassName} category-options" 
+                for="${x.categoryClassName}-btn"
+            >
+                ${x.categoryName}
+            </label>
+            `;
+        });
+        
+        return result;
+    }
+
+
+    async GetIdeas(){
+        var requestOptions = {
+            method: 'GET',
+            mode: 'cors',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        };
+        await fetch(`https://idea-jar-api.herokuapp.com/Api/Idea/GetAll`, requestOptions)
+        .then(response => response.json())
+        .then(data => {
+            this.ideas = data;
+        })
+        .catch(error => console.log(error));
+    }
+
+
+    renderIdeas() {
+        var result = `
+        <tr>
+            <th>Idea</th>
+            <th>Date</th>
+            <th>Category</th>
+        </tr>`;
+
+        this.ideas.forEach(idea => {
+            var date = new Date(idea.date).toDateString();
+            var categoryName;
+
+            for (var category of this.categories){
+                if (category.id == idea.categoryId){
+                    categoryName = category.categoryName;
+                    break;
+                }
             }
-        }
 
-        function createRow(name, date, category) {
-            let ideaTable = document.querySelector('.idea-table')
-            let row = document.createElement('tr')
+            result += `
+            <tr>
+                <td>${idea.ideaName}</td>
+                <td>${date}</td>
+                <td>${categoryName}</td>
+            </tr>
+            `;
+        });
 
-            let cell1 = row.insertCell(0)
-            let cell2 = row.insertCell(1)
-            let cell3 = row.insertCell(2)
-            cell1.innerHTML = name
-            cell2.innerHTML = date
-            cell3.innerHTML = `<label class="${category} category-options">${category}</label>`
-            ideaTable.appendChild(row)
-        }
+        return result
     }
 
-    connectedCallback() {
-        this.render();
     
-        this.addIdeaLogic();
+    async AddIdea() {
+        var form = document.getElementById('add-idea-form');
+
+        form.addEventListener('submit', async function(event) {
+            event.preventDefault();
+
+            var idea = document.getElementById('event-name').value;
+            var date = document.getElementById('event-date').value;
+            var categoryId = document.querySelector('input[name="category-selection"]:checked').value;
+
+            var requestOptions = {
+                method: 'POST',
+                mode: 'cors',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(
+                    {
+                        "ideaName": idea,
+                        "date": new Date(date),
+                        "categoryId": categoryId
+                    }
+                )
+            };
+
+            await fetch(`https://idea-jar-api.herokuapp.com/Api/Idea/AddIdea`, requestOptions)
+            .then(response => {
+                // handle json response
+                console.log(response.json())
+                window.location.reload();
+            })
+            .catch(error => {
+                // handle json response
+                console.log(error)
+            });
+        })
     }
+
+
+    async connectedCallback() {
+        this.setActiveTab();
+        this.render();
+        await this.GetCategories();
+        this.render();
+        await this.GetIdeas();
+        this.render();
+        this.AddIdea();
+    }
+    
 
     render() {
         this.innerHTML = `
@@ -125,7 +170,7 @@ class AddIdeaPage extends HTMLElement {
                             <div class="split">
                                 <div class="form-space">
                                     <h3>
-                                        <label for="event-name">Event name:</label>
+                                        <label for="event-name">Idea:</label>
                                     </h3>
 
                                     <input autofocus class="form-input" type="text" name="event-name" id="event-name"
@@ -147,23 +192,7 @@ class AddIdeaPage extends HTMLElement {
                                         <label for="category">Category:</label>
                                     </h3>
 
-                                    <input type="radio" id="stay-home-btn" name="category" value="stay-home" />
-                                    <label class="stay-home category-options" for="stay-home-btn">Stay Home</label>
-
-                                    <input type="radio" id="restaurant-btn" name="category" value="restaurant" />
-                                    <label class="restaurant category-options" for="restaurant-btn">Restaurant</label>
-
-                                    <input type="radio" id="road-trip-btn" name="category" value="road-trip" />
-                                    <label class="road-trip category-options" for="road-trip-btn">Road Trip</label>
-
-                                    <input type="radio" id="indoors-btn" name="category" value="indoor" />
-                                    <label class="indoor category-options" for="indoors-btn">Indoors</label>
-
-                                    <input type="radio" id="outdoors-btn" name="category" value="outdoor" />
-                                    <label class="outdoor category-options" for="outdoors-btn">Outdoors</label>
-
-                                    <input type="radio" id="other-btn" name="category" value="other" />
-                                    <label class="other category-options" for="other-btn">Other</label>
+                                    ${this.categories.length == 0 ? `<h1>Loading</h1>` : this.renderCategories()}
                                 </div>
                             </div>
                             <input type="submit" value="Submit" class="form-btn" />
@@ -177,15 +206,14 @@ class AddIdeaPage extends HTMLElement {
 
                 <!--Stored Ideas-->
                 <section class="card idea-container">
-                    <h2 class="text-center">Your current ideas:</h2>
+                    <div class="table-header">
+                        <h2 class="text-center">Your ideas:</h2>
+                        <h2 class="text-center">Filter by category<h2>
+                    </div>
+                    
 
                     <table class="idea-table">
-                        <tr>
-                            <th>Event</th>
-                            <th>Date</th>
-                            <th>Category</th>
-                        </tr>
-
+                        ${this.ideas == null ? `<h1>Loading</h1>` : this.renderIdeas()}
                     </table>
 
                 </section>

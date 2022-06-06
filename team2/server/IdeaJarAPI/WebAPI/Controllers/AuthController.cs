@@ -1,35 +1,30 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using WebAPI.Models;
 using WebAPI.DTOs;
-using System.Security.Cryptography;
-using System.Security.Claims;
-using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
-using System.Text;
+using WebAPI.Models;
 using WebAPI.Services;
 
-namespace WebAPI.Controllers
-{
-    [Route("Api/[controller]")]
+namespace WebAPI.Controllers {
+
+
     [ApiController]
-    public class AuthController : ControllerBase
-    {
+    [Route("Api/[controller]")]
+    public class AuthController : ControllerBase {
         private readonly IUserService _userService;
         private readonly IEmailService _emailService;
         private readonly IConfiguration _configuration;
 
 
-        public AuthController(IUserService userService, IEmailService emailService, IConfiguration configuration)
-        {
+
+        public AuthController(IUserService userService, IEmailService emailService, IConfiguration configuration) {
             _userService = userService;
             _emailService = emailService;
             _configuration = configuration;
         }
 
 
+
         [HttpPost("Register")]
-        public async Task<IActionResult> Register([FromBody] RegisterDTO registrationDTO)
-        {
+        public async Task<IActionResult> Register([FromBody] RegisterDTO registrationDTO) {
             if (!ModelState.IsValid)
                 return BadRequest("Some properties are not valid");
 
@@ -41,9 +36,9 @@ namespace WebAPI.Controllers
             return BadRequest(output);
         }
 
+
         [HttpPost("Login")]
-        public async Task<IActionResult> Login([FromBody] LoginDTO loginDTO)
-        {
+        public async Task<IActionResult> Login([FromBody] LoginDTO loginDTO) {
             if (!ModelState.IsValid)
                 return BadRequest("Some properties are not valid");
 
@@ -60,9 +55,9 @@ namespace WebAPI.Controllers
             return Ok(output);
         }
 
+
         [HttpGet("ConfirmEmail")]
-        public async Task<IActionResult> ConfirmEmail(string userId, string token)
-        {
+        public async Task<IActionResult> ConfirmEmail(string userId, string token) {
             if (string.IsNullOrWhiteSpace(userId) || string.IsNullOrWhiteSpace(token))
                 return NotFound();
 
@@ -74,9 +69,9 @@ namespace WebAPI.Controllers
             return Redirect($"{_configuration["APP_URL"]}/ConfirmEmail.html");
         }
 
+
         [HttpPost("ForgotPassword")]
-        public async Task<IActionResult> ForgotPassword(string email)
-        {
+        public async Task<IActionResult> ForgotPassword(string email) {
             if (string.IsNullOrEmpty(email))
                 return NotFound();
 
@@ -88,9 +83,9 @@ namespace WebAPI.Controllers
             return Ok(result);
         }
 
+
         [HttpPost("ResetPassword")]
-        public async Task<IActionResult> ResetPassword([FromForm] ResetPasswordViewModel viewModel)
-        {
+        public async Task<IActionResult> ResetPassword([FromForm] ResetPasswordViewModel viewModel) {
             if (!ModelState.IsValid)
                 return BadRequest("Some properties are not valid");
 
@@ -100,5 +95,6 @@ namespace WebAPI.Controllers
 
             return Ok(output);
         }
+
     }
 }

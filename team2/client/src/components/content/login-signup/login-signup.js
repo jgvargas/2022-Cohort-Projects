@@ -16,6 +16,9 @@ class LoginSignUpPage extends HTMLElement {
     }
 
     loginLogic() {
+        
+
+        // Swap form logic
         const loginForm = document.querySelector('#login')
         const createAccountForm = document.querySelector('#createAccount')
         // In "Login", the link to go to "Create Account" form
