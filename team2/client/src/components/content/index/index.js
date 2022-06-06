@@ -53,7 +53,7 @@ class IndexPage extends HTMLElement {
                                 What will you do today?
                             </h1>
                             <p class="section-text">
-                                In a busy world of possibilities it can be hard to choose. Let <a href="#sign-up" class="idea-jar-ref"><em>Idea Jar<em></a> help! 
+                                In a busy world full of possibilities it can be hard to choose. Let <a href="#sign-up" class="idea-jar-ref"><em>Idea Jar<em></a> help! 
                             </p>
                         </div>
                         

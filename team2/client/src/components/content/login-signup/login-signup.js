@@ -17,7 +17,6 @@ class LoginSignUpPage extends HTMLElement {
 
     loginLogic() {
         
-
         // Swap form logic
         const loginForm = document.querySelector('#login')
         const createAccountForm = document.querySelector('#createAccount')
@@ -41,8 +40,6 @@ class LoginSignUpPage extends HTMLElement {
 
             // If sucess
             setFormMessage(loginForm, "success", "You're logged in")
-            document.cookie = "isLoggedIn=true"
-            document.cookie = "SameSite=Strict"
 
             // If failed
             //setFormMessage(loginForm, "error", "Invalid username password combination")
@@ -52,6 +49,7 @@ class LoginSignUpPage extends HTMLElement {
         createAccountForm.addEventListener('submit', (event)=> {
             event.preventDefault()
             const createUsername = createAccountForm.querySelector('#createUsername').value
+            const createEmail = createAccountForm.querySelector('#createEmail').value
             const createPassword = createAccountForm.querySelector('#createPassword').value
             const createPasswordConfirm = createAccountForm.querySelector('#createPasswordConfirm').value
 
@@ -63,18 +61,26 @@ class LoginSignUpPage extends HTMLElement {
                 setFormMessage(createAccountForm, "error", "Please enter a Username of 3 or more characters")
             }
             else if ( !validUsername.test(createUsername)) {
-                setFormMessage(createAccountForm, "error", "Invalid characters in Username")
+                setFormMessage(createAccountForm, "error", "Invalid characters in Username, please use letters and numbers only")
             }
             else {
-                // Password validation, must be greater than 8 char with and 1 symbol
-
-                // Check passwords match
-                if(createPassword !== createPasswordConfirm)
-                    setFormMessage(createAccountForm, "error", "Passwords do not match")
-                else {
-                    setFormMessage(createAccountForm, "success", "Account created")
-                    // Set Username and password
+                if(createEmail === ''){
+                    setFormMessage(createAccountForm, "error", "Please provide valid email")
                 }
+                else {
+                    // Password validation, must be greater than 8 char with and 1 symbol
+
+                    // Check passwords match
+                    if(createPassword !== createPasswordConfirm)
+                        setFormMessage(createAccountForm, "error", "Passwords do not match")
+                    else if(createPassword === "" || createPasswordConfirm === "")
+                        setFormMessage(createAccountForm, "error", "Complete both password forms")
+                    else {
+                        setFormMessage(createAccountForm, "success", "Account created")
+                        // Set Username and password
+                    }
+                }
+                
             }
         })
 
@@ -166,6 +172,7 @@ class LoginSignUpPage extends HTMLElement {
                     class="form-input"
                     autofocus 
                     placeholder="Email"
+                    id="createEmail"
                 >
                 <div class="form-message"></div>
             </div>

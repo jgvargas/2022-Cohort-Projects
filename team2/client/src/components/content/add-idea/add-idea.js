@@ -70,7 +70,6 @@ class AddIdeaPage extends HTMLElement {
         .then(response => response.json())
         .then(data => {
             this.ideas = data;
-            console.log(this.ideas)
         })
         .catch(error => console.log(error));
     }
@@ -92,9 +91,7 @@ class AddIdeaPage extends HTMLElement {
             for (var category of this.categories){
                 if (category.id == idea.categoryId){
                     categoryName = category.categoryName;
-                    
                     categoryLabel = categoryName.toLowerCase().replace(" ", "-");
-                    console.log(categoryName, categoryLabel)
 
                     break;
                 }
@@ -119,9 +116,16 @@ class AddIdeaPage extends HTMLElement {
         form.addEventListener('submit', async function(event) {
             event.preventDefault();
 
+            // Validation
+            if (idea === "" && categoryId === "") {
+                console.log("No input selected")
+            }
+
             var idea = document.getElementById('event-name').value;
             var date = document.getElementById('event-date').value;
             var categoryId = document.querySelector('input[name="category-selection"]:checked').value;
+
+            
 
             var requestOptions = {
                 method: 'POST',
@@ -149,6 +153,14 @@ class AddIdeaPage extends HTMLElement {
                 console.log(error)
             });
         })
+
+        // Form user feedback
+        function setFormMessage( type, message) {
+            const messageElement = document.querySelector('.form-message')
+            messageElement.textContent = message
+            messageElement.classList.remove('form-message-error', 'form-message-success')
+            messageElement.classList.add(`form-message-${type}`)
+        }
     }
 
 

@@ -1,6 +1,7 @@
 class Navigation extends HTMLElement {
     constructor() {
         super();
+        // This is set depending on API
         this.loggedIn = true;
         this.signInOptions = [
             {
@@ -27,27 +28,14 @@ class Navigation extends HTMLElement {
             navMenu.classList.toggle('active')
         })
 
-        // Profile menu toggle
-        const profileIcon = document.getElementById('profile-icon')
-        const profileMenu = document.getElementById('profile-menu')
-        profileIcon.addEventListener('click', () => {
-            profileMenu.classList.toggle('active')
-        })
-
-        // Add background to Navbar on scroll
-        /*
-        const nav = document.querySelector('nav')
-        window.onscroll = () => {
-            if(document.body.scrollTop > 30 || document.documentElement.scrollTop > 30) {
-                nav.style.background = "rgba(123, 136, 209, .9)"
-                profileMenu.style.background = "rgba(123, 136, 209, .9)"
-            }
-            else {
-                nav.style.background = "none"
-                profileMenu.style.background = 'none'
-            }
+        if(this.loggedIn === true) {
+            // Profile menu toggle
+            const profileIcon = document.getElementById('profile-icon')
+            const profileMenu = document.getElementById('profile-menu')
+            profileIcon.addEventListener('click', () => {
+                profileMenu.classList.toggle('active')
+            })
         }
-        */
     }
 
     // TODO: Ariel--Work in progress
@@ -85,7 +73,7 @@ class Navigation extends HTMLElement {
 
         result += `
             <li class="profile-content">
-                <a class="nav-btn" id="profile-icon">J</a>
+                <a class="nav-btn" id="profile-icon">T</a>
                 <ul id="profile-menu">
                         <li>
                             Settings
