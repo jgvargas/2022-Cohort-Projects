@@ -103,6 +103,7 @@ class AddIdeaPage extends HTMLElement {
                 <td>${idea.ideaName}</td>
                 <td>${date}</td>
                 <td><label class="${categoryLabel} category-options">${categoryName}</label></td>
+                <td><span class="delete-idea-btn">x</span></td>
             </tr>
             `;
         });
@@ -110,24 +111,59 @@ class AddIdeaPage extends HTMLElement {
         return result
     }
 
+    async DeleteIdea() {
+
+    }
     
     async AddIdea() {
+        /* Delete idea section 
+            NOTE: There must be a simplier way of finding what idea was clicked
+                  - Feel free to change
+        */
+        let deleteBtns = document.querySelectorAll('.delete-idea-btn')
+        
+        deleteBtns.forEach( btn => {
+            btn.addEventListener('click', (event)=> {
+                // Select whole row of delete btn
+                let td = event.target.parentNode
+                let tr = td.parentNode
+
+                // Get string of deleted idea
+                let deletedIdea = tr.firstElementChild.innerHTML
+                let deletedId = ''
+
+                // Match string to ID of idea
+                this.ideas.forEach( idea => {
+                    if (idea.ideaName === deletedIdea){
+                        console.log("Match was found with ID:", idea.id)
+                    }
+                })
+
+                // build request for removal
+                var requestOptions = {
+                    method: 'POST',
+                    mode: 'cors',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(
+                        {
+                            "id": ""
+                        }
+                    )
+                };
+            })
+        })
+
         var form = document.getElementById('add-idea-form');
 
         form.addEventListener('submit', async function(event) {
             event.preventDefault();
 
-            // Validation
-            if (idea == "" && categoryId == "") {
-                console.log("No input selected")
-            }
 
             var idea = document.getElementById('event-name').value;
             var date = document.getElementById('event-date').value;
             var categoryId = document.querySelector('input[name="category-selection"]:checked').value;
-
-            console.log(idea);
-            console.log(categoryId);
 
             var requestOptions = {
                 method: 'POST',
