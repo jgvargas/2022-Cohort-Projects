@@ -105,7 +105,6 @@ class LoginSignUpPage extends HTMLElement {
 
             await fetch(`https://idea-jar-api.herokuapp.com/Api/Auth/Register`, requestOptions)
             .then(response => {
-                console.log(response)
                 if (response.ok){
                     response.json()
                     .then(data => {
