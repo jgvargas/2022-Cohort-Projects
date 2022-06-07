@@ -4,6 +4,7 @@ class GetIdeaPage extends HTMLElement {
         this.categories = [];
     }
 
+
     setActiveTab(){
         // Nav tab underline on current page
         const navItems = document.querySelectorAll('.nav-item')
@@ -14,18 +15,6 @@ class GetIdeaPage extends HTMLElement {
         })
     }
 
-
-
-                //adds shake animation to the jar via class, and then removes and brings up popup
-                /*
-                const jar = document.querySelector("#jar");
-                jar.classList.add("jar-shake")
-                setTimeout(() => {
-                    jar.classList.remove("jar-shake")
-                    popupOverlay.classList.add("active")
-                    popupContent.classList.add("active")
-                }, 1500)
-                */
 
     loadOpenModal() {
         var buttons = document.getElementsByClassName('open shake');
@@ -155,6 +144,7 @@ class GetIdeaPage extends HTMLElement {
         .catch(error => console.log(error));
     }
 
+
     renderCategories() {
         var result = "";
 
@@ -171,6 +161,7 @@ class GetIdeaPage extends HTMLElement {
         return result;
     }
 
+
     async connectedCallback() {
         this.setActiveTab();
         this.render();
@@ -180,6 +171,7 @@ class GetIdeaPage extends HTMLElement {
         this.loadOpenModal();
     }
 
+    
     render() {
         this.innerHTML = `
         <main>
