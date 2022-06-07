@@ -34,11 +34,11 @@ namespace WebAPI.Data {
                     },
                     new Category {
                         CategoryName = "Indoors",
-                        CategoryClassName = "indoor"
+                        CategoryClassName = "indoors"
                     },
                     new Category {
                         CategoryName = "Outdoors",
-                        CategoryClassName = "outdoor"
+                        CategoryClassName = "outdoors"
                     }
                 };
 

@@ -80,7 +80,7 @@ class Navigation extends HTMLElement {
 
         result += `
             <li class="profile-content">
-                <a class="nav-btn" id="profile-icon">J</a>
+                <a class="nav-btn" id="profile-icon">T</a>
                 <ul id="profile-menu">
                         <li>
                             Settings

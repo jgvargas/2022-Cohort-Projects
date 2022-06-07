@@ -7,7 +7,6 @@ class AddIdeaPage extends HTMLElement {
     }
 
 
-
     setActiveTab() {
         // Nav tab underline on current page
         const navItems = document.querySelectorAll('.nav-item')
@@ -89,10 +88,13 @@ class AddIdeaPage extends HTMLElement {
         this.ideas.forEach(idea => {
             var date = new Date(idea.date).toDateString();
             var categoryName;
+            let categoryLabel;
 
             for (var category of this.categories){
                 if (category.id == idea.categoryId){
                     categoryName = category.categoryName;
+                    categoryLabel = categoryName.toLowerCase().replace(" ", "-");
+
                     break;
                 }
             }
@@ -101,7 +103,7 @@ class AddIdeaPage extends HTMLElement {
             <tr>
                 <td>${idea.ideaName}</td>
                 <td>${date}</td>
-                <td>${categoryName}</td>
+                <td><label class="${categoryLabel} category-options">${categoryName}</label></td>
             </tr>
             `;
         });
@@ -116,9 +118,16 @@ class AddIdeaPage extends HTMLElement {
         form.addEventListener('submit', async function(event) {
             event.preventDefault();
 
+            // Validation
+            if (idea === "" && categoryId === "") {
+                console.log("No input selected")
+            }
+
             var idea = document.getElementById('event-name').value;
             var date = document.getElementById('event-date').value;
             var categoryId = document.querySelector('input[name="category-selection"]:checked').value;
+
+            
 
             var requestOptions = {
                 method: 'POST',
@@ -146,6 +155,14 @@ class AddIdeaPage extends HTMLElement {
                 console.log(error)
             });
         })
+
+        // Form user feedback
+        function setFormMessage( type, message) {
+            const messageElement = document.querySelector('.form-message')
+            messageElement.textContent = message
+            messageElement.classList.remove('form-message-error', 'form-message-success')
+            messageElement.classList.add(`form-message-${type}`)
+        }
     }
 
 

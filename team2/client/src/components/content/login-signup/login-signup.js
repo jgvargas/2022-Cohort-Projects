@@ -221,6 +221,16 @@ class LoginSignUpPage extends HTMLElement {
                 id="signup-email">
             <div class="form-message"></div>
         </div>
+        <div class="form-input-group">
+                <input 
+                    type="text" 
+                    class="form-input"
+                    autofocus 
+                    placeholder="Email"
+                    id="createEmail"
+                >
+                <div class="form-message"></div>
+            </div>
         <!--Create password-->
         <div class="form-input-group">
             <div class="text-center form-message">
