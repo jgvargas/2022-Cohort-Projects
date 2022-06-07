@@ -53,7 +53,7 @@ class Navigation extends HTMLElement {
         logout.addEventListener('click', function(e) {
             e.preventDefault();
             document.cookie = "X-Access-Token=;SameSite=strict";
-            window.location.assign("/client/index.html");
+            window.location.assign("/index.html");
         })
     }
 

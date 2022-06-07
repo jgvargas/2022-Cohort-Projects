@@ -110,7 +110,7 @@ class LoginSignUpPage extends HTMLElement {
                     response.json()
                     .then(data => {
                         console.log(data);
-                        window.location.assign("/client/login-signup.html");
+                        window.location.assign("/login-signup.html");
                     });
                 } else {
                     response.json().then(data => {
@@ -155,7 +155,7 @@ class LoginSignUpPage extends HTMLElement {
                     response.json()
                     .then(data => {
                         document.cookie = `X-Access-Token=${data.message};SameSite=strict;Secure=true`;
-                        window.location.assign("/client/index.html")
+                        window.location.assign("/index.html")
                     });
                 } else {
                     response.json().then(data => {
