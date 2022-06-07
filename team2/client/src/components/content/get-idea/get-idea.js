@@ -23,24 +23,19 @@ class GetIdeaPage extends HTMLElement {
             btn.addEventListener('click', async (event) => {
                 var id = event.target.value;
 
-        //closes popup via close btn or background click
-        document.addEventListener("click", (event) => {
-            if(!event.target.classList.contains("open") && !event.target.classList.contains("popup-btn-container") && !event.target.classList.contains("popup-inner-text"&& !event.target.classList.contains("popup-overlay"))) {
-                popupOverlay.classList.remove("active");
-                popupContent.classList.remove("active");
-            }
-        })
-
-        //get userData from local storage
-        //const userData = JSON.parse(localStorage.getItem('myIdeaList'));
-        //const popUpWindow = document.querySelector(".popup-content > h2");
+                //closes popup via close btn or background click
+                document.addEventListener("click", (event) => {
+                    if(!event.target.classList.contains("open") && !event.target.classList.contains("popup-btn-container") && !event.target.classList.contains("popup-inner-text"&& !event.target.classList.contains("popup-overlay"))) {
+                        popupOverlay.classList.remove("active");
+                        popupContent.classList.remove("active");
+                    }
+                })
 
                 const popupOverlay = document.querySelector(".popup-overlay");
                 const popupContent = document.querySelector(".popup-content");
                 const jar = document.querySelector('#jar');
                 
                 jar.classList.add('jarShake');
-
 
                 var idea = await this.getIdea(id);
                 this.setModalProps(idea);
@@ -55,19 +50,11 @@ class GetIdeaPage extends HTMLElement {
                     btn.addEventListener("click", () => {
                         popupOverlay.classList.remove("active");
                         popupContent.classList.remove("active");
-        
+
                     })
                 });
-
-        /*
-        function getIdea(chosenCategory) {
-            //reset optional data fields
-            document.querySelector(".popup-date").innerText = "";
-        */
             });
         }
-
-
     }
 
 
@@ -95,7 +82,6 @@ class GetIdeaPage extends HTMLElement {
         };
 
         async function fetchCall(url) {
-            console.log(url)
             await fetch(url, requestOptions)
             .then(response => response.json())
             .then(data => {
@@ -118,13 +104,42 @@ class GetIdeaPage extends HTMLElement {
 
 
     setModalProps(idea) {
-        var name = idea.ideaName;
-        var date = new Date(idea.date).toDateString();
+        var keepIdeaBtn = document.querySelector(".keepIdea");
+        var removeIdeaBtn = document.querySelector(".removeIdea");
+
+        var name = idea == undefined ? "No ideas exist for the category selected" : idea.ideaName;
+        var date = idea == undefined ? null : new Date(idea.date).toDateString();
 
         document.querySelector(".popup-content > h2").textContent = name;
         document.querySelector(".popup-content > .popup-date").textContent = date;
-        
-        console.log(idea)
+
+        if (idea == undefined) {
+            keepIdeaBtn.style.display = "none";
+            removeIdeaBtn.style.display = "none";
+        } else {
+            keepIdeaBtn.style.display = "block";
+            removeIdeaBtn.style.display = "block";
+
+            removeIdeaBtn.addEventListener('click', async () => {
+                var requestOptions = {
+                    method: 'POST',
+                    mode: 'cors',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(
+                        {
+                            "id": idea.id
+                        }
+                    )
+                };
+
+                await fetch(`https://idea-jar-api.herokuapp.com/Api/Idea/DeleteIdea`, requestOptions)
+                .then(response => response.json())
+                .then(data => console.log(data))
+                .catch(error => console.log(error));
+            })
+        }
     }
 
 
@@ -166,12 +181,11 @@ class GetIdeaPage extends HTMLElement {
         this.setActiveTab();
         this.render();
         await this.GetCategories();
-
         this.render();
         this.loadOpenModal();
     }
 
-    
+
     render() {
         this.innerHTML = `
         <main>

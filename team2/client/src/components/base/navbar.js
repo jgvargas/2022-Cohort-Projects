@@ -2,7 +2,6 @@ class Navigation extends HTMLElement {
     constructor() {
         super();
         this.loggedIn = this.getCookie("X-Access-Token") == undefined ? "" : this.getCookie("X-Access-Token");
-        this.userEmail = this.getCookie("X-Email") === undefined ? "" : this.getCookie("X-Email");
         this.signInOptions = [
             {
                 name: "Add Idea",

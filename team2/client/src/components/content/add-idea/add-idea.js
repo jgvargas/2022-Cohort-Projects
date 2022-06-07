@@ -118,7 +118,7 @@ class AddIdeaPage extends HTMLElement {
             event.preventDefault();
 
             // Validation
-            if (idea === "" && categoryId === "") {
+            if (idea == "" && categoryId == "") {
                 console.log("No input selected")
             }
 
@@ -126,7 +126,8 @@ class AddIdeaPage extends HTMLElement {
             var date = document.getElementById('event-date').value;
             var categoryId = document.querySelector('input[name="category-selection"]:checked').value;
 
-            
+            console.log(idea);
+            console.log(categoryId);
 
             var requestOptions = {
                 method: 'POST',
