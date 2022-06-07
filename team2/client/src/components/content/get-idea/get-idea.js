@@ -2,6 +2,7 @@ class GetIdeaPage extends HTMLElement {
     constructor() {
         super();
         this.categories = [];
+        this.url = `https://idea-jar-api.herokuapp.com`;
     }
 
     setActiveTab(){
@@ -53,8 +54,8 @@ class GetIdeaPage extends HTMLElement {
 
 
     async getIdea(id) {
-        const randomIdeaUrl = "https://idea-jar-api.herokuapp.com/Api/Idea/GetRandomIdea";
-        const randomIdeaByCategory = `https://idea-jar-api.herokuapp.com/Api/Idea/GetRandomIdeaByCategory/${id}`;
+        const randomIdeaUrl = `${this.url}/Api/Idea/GetRandomIdea`;
+        const randomIdeaByCategory = `${this.url}/Api/Idea/GetRandomIdeaByCategory/${id}`;
 
         var result;
 
@@ -107,7 +108,7 @@ class GetIdeaPage extends HTMLElement {
                 'Content-Type': 'application/json',
             },
         };
-        await fetch(`https://idea-jar-api.herokuapp.com/Api/Category/GetAll`, requestOptions)
+        await fetch(`${this.url}/Api/Category/GetAll`, requestOptions)
         .then(response => response.json())
         .then(data => {
             data.forEach(category => this.categories.push(category));  

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using WebAPI.DTOs;
 using WebAPI.Models;
 using WebAPI.Services;
@@ -12,7 +13,6 @@ namespace WebAPI.Controllers {
         private readonly IUserService _userService;
         private readonly IEmailService _emailService;
         private readonly IConfiguration _configuration;
-
 
 
         public AuthController(IUserService userService, IEmailService emailService, IConfiguration configuration) {
@@ -94,6 +94,13 @@ namespace WebAPI.Controllers {
                 return BadRequest(output);
 
             return Ok(output);
+        }
+
+
+        [Authorize]
+        [HttpPost("Ping")]
+        public async Task<IActionResult> Ping() {
+            return Ok("Pong");
         }
 
     }

@@ -1,7 +1,8 @@
 class Navigation extends HTMLElement {
     constructor() {
         super();
-        this.loggedIn = true;
+        this.loggedIn = this.getCookie("X-Access-Token") == undefined ? "" : this.getCookie("X-Access-Token");
+        this.userEmail = this.getCookie("X-Email") === undefined ? "" : this.getCookie("X-Email");
         this.signInOptions = [
             {
                 name: "Add Idea",
@@ -16,6 +17,14 @@ class Navigation extends HTMLElement {
         ];
     }
 
+
+
+    getCookie(name) {
+        let matches = document.cookie.match(new RegExp("(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"));
+        return matches ? decodeURIComponent(matches[1]) : undefined;
+    }
+
+
     navLogic() {
         const mobileMenu = document.getElementById("mobile-menu");
         const navMenu = document.querySelector('.nav-list')
@@ -28,40 +37,26 @@ class Navigation extends HTMLElement {
         })
 
         // Profile menu toggle
-        const profileIcon = document.getElementById('profile-icon')
-        const profileMenu = document.getElementById('profile-menu')
-        profileIcon.addEventListener('click', () => {
-            profileMenu.classList.toggle('active')
-        })
-
-        // Add background to Navbar on scroll
-        /*
-        const nav = document.querySelector('nav')
-        window.onscroll = () => {
-            if(document.body.scrollTop > 30 || document.documentElement.scrollTop > 30) {
-                nav.style.background = "rgba(123, 136, 209, .9)"
-                profileMenu.style.background = "rgba(123, 136, 209, .9)"
-            }
-            else {
-                nav.style.background = "none"
-                profileMenu.style.background = 'none'
-            }
+        if (this.loggedIn.length != 0) {
+            const profileIcon = document.getElementById('profile-icon')
+            const profileMenu = document.getElementById('profile-menu')
+            profileIcon.addEventListener('click', () => {
+                profileMenu.classList.toggle('active')
+            })
         }
-        */
     }
 
-    // TODO: Ariel--Work in progress
-    // -----------------------------
-    // Need to finish connecting this
-    // once we get the users JWT stored
-    // in the browser.
+
     logOut() {
         var logout = document.getElementById('logout');
 
         logout.addEventListener('click', function(e) {
-            this.loggedIn = false;
+            e.preventDefault();
+            document.cookie = "X-Access-Token=;SameSite=strict";
+            window.location.assign("/client/index.html");
         })
     }
+
 
     navBarOptions() {
         var result = ``;
@@ -91,7 +86,7 @@ class Navigation extends HTMLElement {
                             Settings
                         </li>
                         <li>
-                            <a class="nav-btn" href="./login-signup.html" id="logout">Logout</a>
+                            <a class="nav-btn" id="logout">Logout</a>
                         </li>
                     </ul>
             </li>
@@ -102,8 +97,10 @@ class Navigation extends HTMLElement {
     connectedCallback() {
         this.render();
         this.navLogic();
+        if (this.loggedIn.length > 0) this.logOut();
     }
     
+
     render() {
         this.innerHTML = `
         <header>

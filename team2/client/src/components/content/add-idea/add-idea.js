@@ -1,8 +1,9 @@
 class AddIdeaPage extends HTMLElement {
     constructor() {
         super();
-        this.categories = [],
-        this.ideas = null
+        this.categories = [];
+        this.ideas = null;
+        this.url = `https://idea-jar-api.herokuapp.com`;
     }
 
 
@@ -26,11 +27,12 @@ class AddIdeaPage extends HTMLElement {
                 'Content-Type': 'application/json',
             },
         };
-        await fetch(`https://idea-jar-api.herokuapp.com/Api/Category/GetAll`, requestOptions)
-        .then(response => response.json())
-        .then(data => {
-            data.forEach(category => this.categories.push(category));  
+        await fetch(`${this.url}/Api/Category/GetAll`, requestOptions)
+        .then(response => { 
+            response.json().then(data => { data.forEach(category => this.categories.push(category));  
+            })
         })
+        
         .catch(error => console.log(error));
     }
 
@@ -67,7 +69,7 @@ class AddIdeaPage extends HTMLElement {
                 'Content-Type': 'application/json',
             },
         };
-        await fetch(`https://idea-jar-api.herokuapp.com/Api/Idea/GetAll`, requestOptions)
+        await fetch(`${this.url}/Api/Idea/GetAll`, requestOptions)
         .then(response => response.json())
         .then(data => {
             this.ideas = data;
@@ -133,7 +135,7 @@ class AddIdeaPage extends HTMLElement {
                 )
             };
 
-            await fetch(`https://idea-jar-api.herokuapp.com/Api/Idea/AddIdea`, requestOptions)
+            await fetch(`${this.url}/Api/Idea/AddIdea`, requestOptions)
             .then(response => {
                 // handle json response
                 console.log(response.json())

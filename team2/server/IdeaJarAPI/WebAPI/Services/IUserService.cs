@@ -12,5 +12,6 @@ namespace WebAPI.Services {
         Task<UserManagerResponseDTO> ForgotPassword(string email);
 
         Task<UserManagerResponseDTO> ResetPassword(ResetPasswordViewModel model);
+
     }
 }

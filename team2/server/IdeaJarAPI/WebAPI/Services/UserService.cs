@@ -4,6 +4,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using System.Web;
 using WebAPI.DTOs;
 using WebAPI.Models;
 
@@ -13,11 +14,14 @@ namespace WebAPI.Services {
         private readonly UserManager<IdentityUser> _userManager;
         private readonly IEmailService _emailService;
 
+
         public UserService(IConfiguration configuration, UserManager<IdentityUser> userManager, IEmailService emailService) {
             _configuration = configuration;
             _userManager = userManager;
             _emailService = emailService;
         }
+
+
 
         public async Task<UserManagerResponseDTO> RegisterUser(RegisterDTO registrationDTO) {
             if (registrationDTO == null) throw new NullReferenceException("Register model is null");
@@ -57,6 +61,7 @@ namespace WebAPI.Services {
                 Errors = output.Errors.Select(e => e.Description)
             };
         }
+
 
         public async Task<UserManagerResponseDTO> LoginUser(LoginDTO loginDTO) {
             var user = await _userManager.FindByNameAsync(loginDTO.Username);
@@ -102,6 +107,7 @@ namespace WebAPI.Services {
             };
         }
 
+
         public async Task<UserManagerResponseDTO> ConfirmEmail(string userId, string token) {
             var user = await _userManager.FindByIdAsync(userId);
 
@@ -130,6 +136,7 @@ namespace WebAPI.Services {
             };
         }
 
+
         public async Task<UserManagerResponseDTO> ForgotPassword(string email) {
             var user = await _userManager.FindByEmailAsync(email);
             if (user == null)
@@ -153,6 +160,7 @@ namespace WebAPI.Services {
                 Message = "Reset password URL has been sent to the email successfully!"
             };
         }
+
 
         public async Task<UserManagerResponseDTO> ResetPassword(ResetPasswordViewModel viewModel) {
             var user = await _userManager.FindByEmailAsync(viewModel.Email);
@@ -184,5 +192,6 @@ namespace WebAPI.Services {
             };
 
         }
+
     }
 }

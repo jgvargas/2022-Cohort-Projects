@@ -54,5 +54,3 @@ loadFontAwesome();
 addPageToComponentsArray();
 // Load components
 components.map(async file => await loadScript("./src/components/", file));
-// Load project.js file
-loadScript("../", "./src/project.js");
