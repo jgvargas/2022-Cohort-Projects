@@ -2,7 +2,6 @@ class Head extends HTMLElement {
     constructor() {
         super();
         this.token = this.getCookie("X-Access-Token") == undefined ? "" : this.getCookie("X-Access-Token");
-        this.url = `https://idea-jar-api.herokuapp.com`;
     }
 
 
@@ -33,7 +32,7 @@ class Head extends HTMLElement {
             },
         };
 
-        var response = await fetch(`${this.url}/Api/Auth/Ping`, requestOptions)
+        var response = await fetch(`https://idea-jar-api.herokuapp.com/Api/Auth/Ping`, requestOptions)
         .then(response => {
             if (response.ok){
                 return true;

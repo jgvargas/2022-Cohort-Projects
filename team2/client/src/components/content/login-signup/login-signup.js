@@ -1,7 +1,6 @@
 class LoginSignUpPage extends HTMLElement {
     constructor() {
         super();
-        this.url = `https://idea-jar-api.herokuapp.com`;
     }
 
 
@@ -104,8 +103,9 @@ class LoginSignUpPage extends HTMLElement {
                 )
             };
 
-            await fetch(`${this.url}/Api/Auth/Register`, requestOptions)
+            await fetch(`https://idea-jar-api.herokuapp.com/Api/Auth/Register`, requestOptions)
             .then(response => {
+                console.log(response)
                 if (response.ok){
                     response.json()
                     .then(data => {
@@ -149,7 +149,7 @@ class LoginSignUpPage extends HTMLElement {
                 )
             };
 
-            await fetch(`https://localhost:44319/Api/Auth/Login`, requestOptions)
+            await fetch(`https://idea-jar-api.herokuapp.com/Api/Auth/Login`, requestOptions)
             .then(response => {
                 if (response.ok){
                     response.json()
@@ -221,16 +221,6 @@ class LoginSignUpPage extends HTMLElement {
                 id="signup-email">
             <div class="form-message"></div>
         </div>
-        <div class="form-input-group">
-                <input 
-                    type="text" 
-                    class="form-input"
-                    autofocus 
-                    placeholder="Email"
-                    id="createEmail"
-                >
-                <div class="form-message"></div>
-            </div>
         <!--Create password-->
         <div class="form-input-group">
             <div class="text-center form-message">
