@@ -107,10 +107,25 @@ class GetIdeaPage extends HTMLElement {
         var keepIdeaBtn = document.querySelector(".keepIdea");
         var removeIdeaBtn = document.querySelector(".removeIdea");
 
-        var name = idea == undefined ? "No ideas exist for the category selected" : idea.ideaName;
-        var date = idea == undefined ? null : new Date(idea.date).toDateString();
+        if (idea === undefined) {
+            var name = "No ideas exist for the category selected";
+            var category = null;
+            var date = null;
+        } else {
+            var name = idea.ideaName;
+            var category;
+            var date = new Date(idea.date).toDateString();
 
-        document.querySelector(".popup-content > h2").textContent = name;
+            for (var cat of this.categories) {
+                if (cat.id == idea.categoryId) {
+                    console.log('true')
+                    category = cat.categoryName;
+                    break;
+                }
+            }
+        }
+
+        document.querySelector(".popup-content > h2").textContent = `${name} [${category}]`;
         document.querySelector(".popup-content > .popup-date").textContent = date;
 
         if (idea == undefined) {
