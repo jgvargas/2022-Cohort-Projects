@@ -112,7 +112,53 @@ class AddIdeaPage extends HTMLElement {
     }
 
     async DeleteIdea() {
+        /* Delete idea section 
+        */
+        let deleteBtns = document.querySelectorAll('.delete-idea-btn')
 
+        deleteBtns.forEach( btn => {
+            btn.addEventListener('click', async (event) => {
+                // Select whole row of delete btn
+                let td = event.target.parentNode
+                let tr = td.parentNode
+
+                // Get string of deleted idea
+                let deletedIdea = tr.firstElementChild.innerHTML
+                let deletedId = ''
+
+                // Match string to ID of idea
+                this.ideas.forEach( idea => {
+                    if (idea.ideaName === deletedIdea){
+                        deletedId = idea.id
+                        console.log("Match was found with ID:", idea.id)
+                    }
+                })
+
+                // build request for removal
+                var requestOptions = {
+                    method: 'POST',
+                    mode: 'cors',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(
+                        {
+                            "id": deletedId
+                        }
+                    )
+                }
+
+                console.log(requestOptions)
+
+                await fetch(`https://idea-jar-api.herokuapp.com/Api/Idea/DeleteIdea`, requestOptions)
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data)
+                    window.location.reload()
+                })
+                .catch(error => console.log(error));
+            })
+        })
     }
     
     async AddIdea() {
@@ -154,53 +200,6 @@ class AddIdeaPage extends HTMLElement {
             });
         })
 
-        /* Delete idea section 
-            NOTE: - There must be a simplier way of finding what idea was clicked
-                  - If I moved this code to its own function, would another .render() need to be called?
-        */
-        let deleteBtns = document.querySelectorAll('.delete-idea-btn')
-
-        deleteBtns.forEach( btn => {
-            btn.addEventListener('click', async (event) => {
-                // Select whole row of delete btn
-                let td = event.target.parentNode
-                let tr = td.parentNode
-
-                // Get string of deleted idea
-                let deletedIdea = tr.firstElementChild.innerHTML
-                let deletedId = ''
-
-                // Match string to ID of idea
-                this.ideas.forEach( idea => {
-                    if (idea.ideaName === deletedIdea){
-                        deletedId = idea.id
-                        console.log("Match was found with ID:", idea.id)
-                    }
-                })
-
-                // build request for removal
-                var requestOptions = {
-                    method: 'POST',
-                    mode: 'cors',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(
-                        {
-                            "id": deletedId
-                        }
-                    )
-                }
-
-                console.log(requestOptions)
-
-                await fetch(`https://idea-jar-api.herokuapp.com/Api/Idea/DeleteIdea`, requestOptions)
-                .then(response => response.json())
-                .then(data => console.log(data))
-                .catch(error => console.log(error));
-            })
-        })
-
         // Form user feedback
         function setFormMessage( type, message) {
             const messageElement = document.querySelector('.form-message')
@@ -218,6 +217,7 @@ class AddIdeaPage extends HTMLElement {
         this.render();
         await this.GetIdeas();
         this.render();
+        this.DeleteIdea();
         this.AddIdea();
     }
     
