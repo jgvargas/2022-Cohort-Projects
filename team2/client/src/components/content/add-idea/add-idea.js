@@ -103,6 +103,7 @@ class AddIdeaPage extends HTMLElement {
                 <td>${idea.ideaName}</td>
                 <td>${date}</td>
                 <td><label class="${categoryLabel} category-options">${categoryName}</label></td>
+                <td><span class="delete-idea-btn">x</span></td>
             </tr>
             `;
         });
@@ -110,24 +111,21 @@ class AddIdeaPage extends HTMLElement {
         return result
     }
 
+    async DeleteIdea() {
+
+    }
     
     async AddIdea() {
+
         var form = document.getElementById('add-idea-form');
 
         form.addEventListener('submit', async function(event) {
             event.preventDefault();
 
-            // Validation
-            if (idea == "" && categoryId == "") {
-                console.log("No input selected")
-            }
 
             var idea = document.getElementById('event-name').value;
             var date = document.getElementById('event-date').value;
             var categoryId = document.querySelector('input[name="category-selection"]:checked').value;
-
-            console.log(idea);
-            console.log(categoryId);
 
             var requestOptions = {
                 method: 'POST',
@@ -154,6 +152,53 @@ class AddIdeaPage extends HTMLElement {
                 // handle json response
                 console.log(error)
             });
+        })
+
+        /* Delete idea section 
+            NOTE: - There must be a simplier way of finding what idea was clicked
+                  - If I moved this code to its own function, would another .render() need to be called?
+        */
+        let deleteBtns = document.querySelectorAll('.delete-idea-btn')
+
+        deleteBtns.forEach( btn => {
+            btn.addEventListener('click', async (event) => {
+                // Select whole row of delete btn
+                let td = event.target.parentNode
+                let tr = td.parentNode
+
+                // Get string of deleted idea
+                let deletedIdea = tr.firstElementChild.innerHTML
+                let deletedId = ''
+
+                // Match string to ID of idea
+                this.ideas.forEach( idea => {
+                    if (idea.ideaName === deletedIdea){
+                        deletedId = idea.id
+                        console.log("Match was found with ID:", idea.id)
+                    }
+                })
+
+                // build request for removal
+                var requestOptions = {
+                    method: 'POST',
+                    mode: 'cors',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(
+                        {
+                            "id": deletedId
+                        }
+                    )
+                }
+
+                console.log(requestOptions)
+
+                await fetch(`https://idea-jar-api.herokuapp.com/Api/Idea/DeleteIdea`, requestOptions)
+                .then(response => response.json())
+                .then(data => console.log(data))
+                .catch(error => console.log(error));
+            })
         })
 
         // Form user feedback

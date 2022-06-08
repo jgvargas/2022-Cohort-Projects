@@ -930,8 +930,10 @@ td:nth-child(4) {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 30px;
-  width: 30px;
+  height: 25px;
+  width: 25px;
+  line-height: 25px;
+  text-align: center;
   color: #fff;
   border-radius: 50%;
   background: #00aaff;
