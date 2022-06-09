@@ -4,78 +4,6 @@ class LoginSignUpPage extends HTMLElement {
     }
 
 
-    // loginLogic() {
-        
-
-    //     // Swap form logic
-    //     const loginForm = document.querySelector('#login')
-    //     const createAccountForm = document.querySelector('#createAccount')
-    //     // In "Login", the link to go to "Create Account" form
-    //     document.querySelector('#linkCreateAccount').addEventListener('click', (event) => {
-    //         event.preventDefault()
-    //         loginForm.classList.add('hide-element')
-    //         createAccountForm.classList.remove('hide-element')
-    //     })
-    //     // In "Create Account", the link to go to "Login" form
-    //     document.querySelector('#linkLogin').addEventListener('click', (event) => {
-    //         event.preventDefault()
-    //         loginForm.classList.remove('hide-element')
-    //         createAccountForm.classList.add('hide-element')
-    //     })
-        
-    //     // Submit from "Login" form
-    //     loginForm.addEventListener('submit', event => {
-    //         event.preventDefault();
-    //         // Perform login
-
-    //         // If sucess
-    //         setFormMessage(loginForm, "success", "You're logged in")
-    //         document.cookie = "isLoggedIn=true"
-    //         document.cookie = "SameSite=Strict"
-
-    //         // If failed
-    //         //setFormMessage(loginForm, "error", "Invalid username password combination")
-    //     })
-
-    //     // Submit from "Create Account" form
-    //     createAccountForm.addEventListener('submit', (event)=> {
-    //         event.preventDefault()
-    //         const createUsername = createAccountForm.querySelector('#createUsername').value
-    //         const createPassword = createAccountForm.querySelector('#createPassword').value
-    //         const createPasswordConfirm = createAccountForm.querySelector('#createPasswordConfirm').value
-
-    //         // Valid pattern regex
-    //         let validUsername = /^[a-zA-Z0-9]+$/
-    //         let validPassword = /^[a-zA-Z0-9!@#$]+$/
-
-    //         if(createUsername.length < 3) {
-    //             setFormMessage(createAccountForm, "error", "Please enter a Username of 3 or more characters")
-    //         }
-    //         else if ( !validUsername.test(createUsername)) {
-    //             setFormMessage(createAccountForm, "error", "Invalid characters in Username")
-    //         }
-    //         else {
-    //             // Password validation, must be greater than 8 char with and 1 symbol
-
-    //             // Check passwords match
-    //             if(createPassword !== createPasswordConfirm)
-    //                 setFormMessage(createAccountForm, "error", "Passwords do not match")
-    //             else {
-    //                 setFormMessage(createAccountForm, "success", "Account created")
-    //                 // Set Username and password
-    //             }
-    //         }
-    //     })
-
-    //     function setFormMessage(formElement, type, message) {
-    //         const messageElement = formElement.querySelector('.form-message')
-    //         messageElement.textContent = message
-    //         messageElement.classList.remove('form-message-error', 'form-message-success')
-    //         messageElement.classList.add(`form-message-${type}`)
-    //     }
-    // }
-
-
     register() {
         var form = document.getElementById('createAccount');
 
@@ -167,6 +95,13 @@ class LoginSignUpPage extends HTMLElement {
         })
     }
 
+
+    forgotPassword() {
+        var form = document.getElementById('forgotPassword');
+
+        var 
+    }
+
     #loginForm = `
     <form id="login" class="">
 
@@ -186,7 +121,7 @@ class LoginSignUpPage extends HTMLElement {
         <!--Submit-->
         <button type="submit" class="form-btn">Continue</button>
         <p class="form-text text-center">
-            <a href="">Forgot your password?</a>
+            <a id="linkForgotPassword">Forgot your password?</a>
         </p>
         <p class="form-text text-center">
             <a id="linkCreateAccount" href="">Don't have an account? Create account</a>
@@ -256,15 +191,39 @@ class LoginSignUpPage extends HTMLElement {
     `;
 
 
+    #forgotPassword = `
+    <form id="forgotPassword" class="hide-element" action="" method="">
+
+        <h2 class="text-center">Forgot Password</h2>
+
+        <div class="text-center form-message form-message-error"></div>
+        <div class="form-input-group">
+            <input 
+                autocomplete="off" 
+                class="form-input" 
+                placeholder="Email Address" 
+                autofocus 
+                type="text" 
+                name="" 
+                id="forgotpassword-email">
+        </div>
+        <!--Submit-->
+        <button type="submit" class="form-btn">Submit</button>
+    </form>
+    `
+
+
     swapForm() {
         // Swap form logic
         const loginForm = document.querySelector('#login');
         const createAccountForm = document.querySelector('#createAccount');
+        const forgotPasswordForm = document.querySelector('#forgotPassword');
 
         document.querySelector('#linkCreateAccount').addEventListener('click', (event) => {
             event.preventDefault()
-            loginForm.classList.add('hide-element')
-            createAccountForm.classList.remove('hide-element')
+            loginForm.classList.add('hide-element');
+            createAccountForm.classList.remove('hide-element');
+            forgotPasswordForm.classList.add('hide-element');
         });
 
         // In "Create Account", the link to go to "Login" form
@@ -272,6 +231,15 @@ class LoginSignUpPage extends HTMLElement {
             event.preventDefault()
             loginForm.classList.remove('hide-element')
             createAccountForm.classList.add('hide-element')
+            forgotPasswordForm.classList.add('hide-element');
+        });
+
+
+        document.querySelector('#linkForgotPassword').addEventListener('click', (event) => {
+            event.preventDefault()
+            loginForm.classList.add('hide-element')
+            createAccountForm.classList.add('hide-element')
+            forgotPasswordForm.classList.remove('hide-element');
         });
     }
     
@@ -289,6 +257,8 @@ class LoginSignUpPage extends HTMLElement {
             ${this.#loginForm}
 
             ${this.#signupForm}
+
+            ${this.#forgotPassword}
             
         </section>
     </main>
