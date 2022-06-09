@@ -236,6 +236,9 @@ class LoginSignUpPage extends HTMLElement {
                 name="" 
                 id="forgotpassword-email">
         </div>
+        <p class="form-text text-center">
+            <a id="linkLogin" href="">Remember your password? Sign in</a>
+        </p>
         <!--Submit-->
         <button type="submit" class="form-btn">Submit</button>
     </form>

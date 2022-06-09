@@ -174,6 +174,33 @@ class AddIdeaPage extends HTMLElement {
             
             if (idea != null && categoryId !== null) {
                 console.log('All good');
+
+                var requestOptions = {
+                    method: 'POST',
+                    mode: 'cors',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(
+                        {
+                            "ideaName": idea,
+                            "date": new Date(date),
+                            "categoryId": categoryId.value
+                        }
+                    )
+                };
+    
+                await fetch(`https://idea-jar-api.herokuapp.com/Api/Idea/AddIdea`, requestOptions)
+                .then(response => {
+                    // handle json response
+                    console.log(response.json())
+                    setFormMessage("success", "Idea added")
+                    window.location.reload();
+                })
+                .catch(error => {
+                    // handle json response
+                    console.log(error)
+                });
             } else {
                 console.log("No input", categoryId, idea)
                 setFormMessage("error", "Please enter an Idea and a category");
@@ -181,32 +208,7 @@ class AddIdeaPage extends HTMLElement {
                 return;
             }
 
-            var requestOptions = {
-                method: 'POST',
-                mode: 'cors',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(
-                    {
-                        "ideaName": idea,
-                        "date": new Date(date),
-                        "categoryId": categoryId.value
-                    }
-                )
-            };
-
-            await fetch(`https://idea-jar-api.herokuapp.com/Api/Idea/AddIdea`, requestOptions)
-            .then(response => {
-                // handle json response
-                console.log(response.json())
-                setFormMessage("success", "Idea added")
-                window.location.reload();
-            })
-            .catch(error => {
-                // handle json response
-                console.log(error)
-            });
+            
         })
 
         
