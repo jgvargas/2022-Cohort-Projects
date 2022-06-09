@@ -99,7 +99,6 @@ class LoginSignUpPage extends HTMLElement {
     forgotPassword() {
         var form = document.getElementById('forgotPassword');
 
-        var 
     }
 
     #loginForm = `
