@@ -25,7 +25,7 @@ class GetIdeaPage extends HTMLElement {
 
                 //closes popup via close btn or background click
                 document.addEventListener("click", (event) => {
-                    if(!event.target.classList.contains("open") && !event.target.classList.contains("popup-btn-container") && !event.target.classList.contains("popup-inner-text"&& !event.target.classList.contains("popup-overlay"))) {
+                    if(!event.target.classList.contains("open") && !event.target.classList.contains("popup-btn-container") && !event.target.classList.contains("popup-inner-text")&& !event.target.classList.contains("popup-overlay")) {
                         popupOverlay.classList.remove("active");
                         popupContent.classList.remove("active");
                     }
@@ -46,13 +46,14 @@ class GetIdeaPage extends HTMLElement {
                     popupContent.classList.add("active");
                 }, 250);
 
-                [document.querySelector(".close"), popupOverlay].forEach(btn => {
-                    btn.addEventListener("click", () => {
-                        popupOverlay.classList.remove("active");
-                        popupContent.classList.remove("active");
+                //This code seems redundent now?
+                // [document.querySelector(".close"), popupOverlay].forEach(btn => {
+                //     btn.addEventListener("click", () => {
+                //         popupOverlay.classList.remove("active");
+                //         popupContent.classList.remove("active");
 
-                    })
-                });
+                //     })
+                // });
             });
         }
     }
