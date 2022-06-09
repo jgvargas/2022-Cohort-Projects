@@ -44,12 +44,12 @@ class ResetPassword extends HTMLElement {
                 if (response.ok){
                     response.json()
                     .then(data => {
-                        console.log(data);
                         setFormMessage("success", data.message);
                     });
                 } else {
                     response.json().then(data => {
                         // handle error response
+                        setFormMessage("error", data.message);
                         console.log(data);
                     });
                 }
@@ -60,7 +60,11 @@ class ResetPassword extends HTMLElement {
 
         // Form user feedback
         function setFormMessage( type, message) {
-            const messageElement = document.querySelector('.form-message')
+            const messageElement = document.querySelector('.form-message');
+            const button = document.querySelector('.form-btn')
+            
+            button.style.display = "none";
+
             messageElement.textContent = message
             messageElement.classList.remove('form-message-error', 'form-message-success')
             messageElement.classList.add(`form-message-${type}`) 
@@ -85,8 +89,8 @@ class ResetPassword extends HTMLElement {
         <div class="form-input-group">
             <div class="text-center form-message">
                 <br/>
-                Click below to send reset password instructions to your email
                 <br/>
+                Click below to send instructions to your email.
             </div>
         </div>
         <div class="form-input-group">
