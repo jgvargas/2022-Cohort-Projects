@@ -286,7 +286,6 @@ class AddIdeaPage extends HTMLElement {
                 <section class="card idea-container">
                     <div class="table-header">
                         <h2 class="text-center">Your ideas:</h2>
-                        <h2 class="text-center">Filter by category<h2>
                     </div>
                     
 
