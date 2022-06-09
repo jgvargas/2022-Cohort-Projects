@@ -112,51 +112,8 @@ class AddIdeaPage extends HTMLElement {
     }
 
     async DeleteIdea() {
-
-    }
-    
-    async AddIdea() {
-
-        var form = document.getElementById('add-idea-form');
-
-        form.addEventListener('submit', async function(event) {
-            event.preventDefault();
-
-
-            var idea = document.getElementById('event-name').value;
-            var date = document.getElementById('event-date').value;
-            var categoryId = document.querySelector('input[name="category-selection"]:checked').value;
-
-            var requestOptions = {
-                method: 'POST',
-                mode: 'cors',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(
-                    {
-                        "ideaName": idea,
-                        "date": new Date(date),
-                        "categoryId": categoryId
-                    }
-                )
-            };
-
-            await fetch(`https://idea-jar-api.herokuapp.com/Api/Idea/AddIdea`, requestOptions)
-            .then(response => {
-                // handle json response
-                console.log(response.json())
-                window.location.reload();
-            })
-            .catch(error => {
-                // handle json response
-                console.log(error)
-            });
-        })
-
         /* Delete idea section 
-            NOTE: - There must be a simplier way of finding what idea was clicked
-                  - If I moved this code to its own function, would another .render() need to be called?
+                NOTE: - There must be a simplier way of finding what idea was clicked
         */
         let deleteBtns = document.querySelectorAll('.delete-idea-btn')
 
@@ -195,11 +152,69 @@ class AddIdeaPage extends HTMLElement {
                 console.log(requestOptions)
 
                 await fetch(`https://idea-jar-api.herokuapp.com/Api/Idea/DeleteIdea`, requestOptions)
-                .then(response => response.json())
-                .then(data => console.log(data))
+                .then(response => {
+                    response.json()
+                })
+                .then(data => {
+                    console.log(data)
+                    window.location.reload()
+                })
                 .catch(error => console.log(error));
             })
         })
+    }
+    
+    async AddIdea() {
+
+        var form = document.getElementById('add-idea-form');
+
+        form.addEventListener('submit', async function(event) {
+            event.preventDefault();
+
+            if(document.getElementById('event-name').value !== null && document.querySelector('input[name="category-selection"]:checked').value !== null){
+                console.log("All good")
+                
+            }
+            else {
+                console.log("No input", document.querySelector('input[name="category-selection"]:checked').value, document.getElementById('event-name'))
+                setFormMessage("error", "Please enter an Idea and a category")
+            }
+
+            var idea = document.getElementById('event-name').value;
+                var date = document.getElementById('event-date').value;
+                var categoryId = document.querySelector('input[name="category-selection"]:checked').value;
+    
+                var requestOptions = {
+                    method: 'POST',
+                    mode: 'cors',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(
+                        {
+                            "ideaName": idea,
+                            "date": new Date(date),
+                            "categoryId": categoryId
+                        }
+                    )
+                };
+    
+                await fetch(`https://idea-jar-api.herokuapp.com/Api/Idea/AddIdea`, requestOptions)
+                .then(response => {
+                    // handle json response
+                    console.log(response.json())
+                    setFormMessage("success", "Idea added")
+                    window.location.reload();
+                })
+                .catch(error => {
+                    // handle json response
+                    console.log(error)
+                });
+
+                
+        })
+
+        
 
         // Form user feedback
         function setFormMessage( type, message) {
@@ -207,6 +222,7 @@ class AddIdeaPage extends HTMLElement {
             messageElement.textContent = message
             messageElement.classList.remove('form-message-error', 'form-message-success')
             messageElement.classList.add(`form-message-${type}`)
+            
         }
     }
 
@@ -218,6 +234,7 @@ class AddIdeaPage extends HTMLElement {
         this.render();
         await this.GetIdeas();
         this.render();
+        this.DeleteIdea();
         this.AddIdea();
     }
     

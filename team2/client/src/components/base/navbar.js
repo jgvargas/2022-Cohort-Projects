@@ -30,7 +30,6 @@ class Navigation extends HTMLElement {
         
         // Hamburger menu
         mobileMenu.addEventListener('click', (event) => {
-            console.log(event.target)
             mobileMenu.classList.toggle('active')
             navMenu.classList.toggle('active')
         })
