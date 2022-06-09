@@ -168,10 +168,18 @@ class AddIdeaPage extends HTMLElement {
         form.addEventListener('submit', async function(event) {
             event.preventDefault();
 
-
             var idea = document.getElementById('event-name').value;
             var date = document.getElementById('event-date').value;
-            var categoryId = document.querySelector('input[name="category-selection"]:checked').value;
+            var categoryId = document.querySelector('input[name="category-selection"]:checked');
+            
+            if (idea != null && categoryId !== null) {
+                console.log('All good');
+            } else {
+                console.log("No input", categoryId, idea)
+                setFormMessage("error", "Please enter an Idea and a category");
+
+                return;
+            }
 
             var requestOptions = {
                 method: 'POST',
@@ -183,7 +191,7 @@ class AddIdeaPage extends HTMLElement {
                     {
                         "ideaName": idea,
                         "date": new Date(date),
-                        "categoryId": categoryId
+                        "categoryId": categoryId.value
                     }
                 )
             };
@@ -192,6 +200,7 @@ class AddIdeaPage extends HTMLElement {
             .then(response => {
                 // handle json response
                 console.log(response.json())
+                setFormMessage("success", "Idea added")
                 window.location.reload();
             })
             .catch(error => {
@@ -200,12 +209,15 @@ class AddIdeaPage extends HTMLElement {
             });
         })
 
+        
+
         // Form user feedback
         function setFormMessage( type, message) {
             const messageElement = document.querySelector('.form-message')
             messageElement.textContent = message
             messageElement.classList.remove('form-message-error', 'form-message-success')
             messageElement.classList.add(`form-message-${type}`)
+            
         }
     }
 
