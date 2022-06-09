@@ -10,8 +10,6 @@ class ResetPassword extends HTMLElement {
         return matches ? decodeURIComponent(matches[1]) : undefined;
     }
 
-<<<<<<< HEAD
-    
     parseEmail() {
         var base64Url = this.loggedIn.split('.')[1];
         var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
@@ -24,18 +22,15 @@ class ResetPassword extends HTMLElement {
         return json.Email;
     };
 
-=======
+
     resetPassword() {
-        let newPasswordElement = document.getElementById('new-password')
-        let confirmPasswordElement = document.getElementById('new-confirmPassword')
-        let resetPasswordForm = document.getElementById('reset-password-form')
+        let resetPasswordForm = document.getElementById('reset-password-form');
+        
+        var email = this.parseEmail();
 
         resetPasswordForm.addEventListener('submit', async function(event) {
             event.preventDefault()
 
-            let newPassword = newPasswordElement.value
-            let newPasswordConfirm = confirmPasswordElement.value
-            
             var requestOptions = {
                 method: 'POST',
                 mode: 'cors',
@@ -43,16 +38,14 @@ class ResetPassword extends HTMLElement {
                     'Content-Type': 'application/json',
                 }
             };
-            setFormMessage("success", "Password has been reset")
 
-            /*
             await fetch(`https://idea-jar-api.herokuapp.com/Api/Auth/ForgotPassword?email=${email}`, requestOptions)
             .then(response => {
                 if (response.ok){
                     response.json()
                     .then(data => {
                         console.log(data);
-                        //window.location.assign("/index.html");
+                        setFormMessage("success", data.message);
                     });
                 } else {
                     response.json().then(data => {
@@ -62,7 +55,7 @@ class ResetPassword extends HTMLElement {
                 }
             })
             .catch(error => console.log(error));
-        */
+        
         })
 
         // Form user feedback
@@ -73,11 +66,11 @@ class ResetPassword extends HTMLElement {
             messageElement.classList.add(`form-message-${type}`) 
         }
     }
->>>>>>> f725fa09cf6aec1e1aa91af91e9c942b413adcfb
 
     connectedCallback() {
         this.render();
         this.resetPassword();
+        this.parseEmail();
     }
 
     render() {
@@ -91,31 +84,16 @@ class ResetPassword extends HTMLElement {
         <!--Create new password-->
         <div class="form-input-group">
             <div class="text-center form-message">
-                <p><strong>Password requirements: </strong></p>
                 <br/>
-                One upper & lower case letter, one number, and one special character
+                Click below to send reset password instructions to your email
                 <br/>
             </div>
-            <br/>
-            <input 
-                class="form-input" 
-                placeholder="Password" 
-                type="password" 
-                name="" 
-                id="new-password">
-            
         </div>
         <div class="form-input-group">
-            <input 
-                class="form-input" 
-                placeholder="Confirm password" 
-                type="password" 
-                name="" 
-                id="new-confirmPassword">
             <div class="form-message"></div>
         </div> 
         <!--Submit-->
-        <button type="submit" class="form-btn ">Continue</button>
+        <button type="submit" class="form-btn ">Confirm</button>
         </form>
         </div>
         
