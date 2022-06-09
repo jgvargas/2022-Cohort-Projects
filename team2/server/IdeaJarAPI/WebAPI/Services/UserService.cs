@@ -83,6 +83,7 @@ namespace WebAPI.Services {
             var claims = new Claim[]
             {
                 new Claim("UserName", loginDTO.Username),
+                new Claim("Email", user.Email),
                 new Claim(ClaimTypes.NameIdentifier, user.Id)
             };
 
