@@ -118,7 +118,6 @@ class GetIdeaPage extends HTMLElement {
 
             for (var cat of this.categories) {
                 if (cat.id == idea.categoryId) {
-                    console.log('true')
                     category = cat.categoryName;
                     break;
                 }
