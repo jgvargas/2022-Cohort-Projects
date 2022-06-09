@@ -94,8 +94,8 @@ class Navigation extends HTMLElement {
             <li class="profile-content">
                 <a class="nav-btn" id="profile-icon">${this.parseUserName()}</a>
                 <ul id="profile-menu">
-                        <li>
-                            Settings
+                        <li class="nav-item">
+                            <a href="./reset-password.html">Reset Password</a>
                         </li>
                         <li>
                             <a class="nav-btn" id="logout">Logout</a>
