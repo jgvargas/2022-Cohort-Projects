@@ -54,7 +54,7 @@ class Head extends HTMLElement {
         var onIndexPage = this.isIndexPage();
         await this.isValidToken().then(valid => {
             if (!onIndexPage && !valid) {
-                window.location.assign("/login-signup.html"); 
+                window.location.assign("/index.html"); 
             }
         });
 
