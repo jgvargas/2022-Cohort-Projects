@@ -99,6 +99,36 @@ class LoginSignUpPage extends HTMLElement {
     forgotPassword() {
         var form = document.getElementById('forgotPassword');
 
+        form.addEventListener('submit', async function(event) {
+            event.preventDefault();
+
+            var email = document.getElementById('forgotpassword-email').value;
+            
+            var requestOptions = {
+                method: 'POST',
+                mode: 'cors',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            };
+
+            await fetch(`https://idea-jar-api.herokuapp.com/Api/Auth/ForgotPassword?email=${email}`, requestOptions)
+            .then(response => {
+                if (response.ok){
+                    response.json()
+                    .then(data => {
+                        console.log(data);
+                    });
+                } else {
+                    response.json().then(data => {
+                        // handle error response
+                        console.log(data);
+                    });
+                }
+            })
+            .catch(error => console.log(error));
+        })
+
     }
 
     #loginForm = `
@@ -246,6 +276,7 @@ class LoginSignUpPage extends HTMLElement {
         this.render();
         this.login();
         this.register();
+        this.forgotPassword();
         this.swapForm();
     }
 
