@@ -24,6 +24,19 @@ class Navigation extends HTMLElement {
     }
 
 
+    parseUserName() {
+        var base64Url = this.loggedIn.split('.')[1];
+        var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+        var jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+            return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+        }).join(''));
+        
+        var json = JSON.parse(jsonPayload);
+
+        return json.UserName[0].toUpperCase();
+    };
+
+
     navLogic() {
         const mobileMenu = document.getElementById("mobile-menu");
         const navMenu = document.querySelector('.nav-list')
@@ -79,7 +92,7 @@ class Navigation extends HTMLElement {
 
         result += `
             <li class="profile-content">
-                <a class="nav-btn" id="profile-icon">T</a>
+                <a class="nav-btn" id="profile-icon">${this.parseUserName()}</a>
                 <ul id="profile-menu">
                         <li>
                             Settings
