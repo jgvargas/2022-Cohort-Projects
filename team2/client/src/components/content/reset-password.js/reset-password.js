@@ -12,31 +12,40 @@ class ResetPassword extends HTMLElement {
     render() {
         this.innerHTML = `
         <main>
-        <form id="login" class="">
+        <div class="card">
+        <form id="reset-password" class="">
 
-        <h2 class="text-center">Login</h2>
+        <h2 class="text-center">Reset Password</h2>
 
-        <div class="text-center form-message form-message-error form-message-success"></div>
-        <!--Username/email-->
+        
+        <!--Create new password-->
         <div class="form-input-group">
-            <input class="form-input" placeholder="Username or email" autofocus required type="text" id="username">
-            <div class="form-message"></div>
+            <div class="text-center form-message">
+                <p><strong>Password requirements: </strong></p>
+                <br/>
+                One upper & lower case letter, one number, and one special character
+                <br/>
+            </div>
+            <br/>
+            <input 
+                class="form-input" 
+                placeholder="Password" 
+                type="password" 
+                name="" 
+                id="signup-password">
+            
         </div>
-        <!--Password-->
         <div class="form-input-group">
-            <input class="form-input" placeholder="Password" type="password" required id="password">
+            <input 
+                class="form-input" 
+                placeholder="Confirm password" 
+                type="password" 
+                name="" 
+                id="signup-confirmPassword">
             <div class="form-message"></div>
+        </div> 
+        </form>
         </div>
-        <!--Submit-->
-        <button type="submit" class="form-btn">Continue</button>
-        <p class="form-text text-center">
-            <a href="">Forgot your password?</a>
-        </p>
-        <p class="form-text text-center">
-            <a id="linkCreateAccount" href="">Don't have an account? Create account</a>
-        </p>
-    </form>
-    
         </main>
         `;
     }
