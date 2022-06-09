@@ -1,9 +1,28 @@
 class ResetPassword extends HTMLElement {
     constructor() {
         super();
+        this.loggedIn = this.getCookie("X-Access-Token") == undefined ? "" : this.getCookie("X-Access-Token");
+    }
+
+
+    getCookie(name) {
+        let matches = document.cookie.match(new RegExp("(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"));
+        return matches ? decodeURIComponent(matches[1]) : undefined;
     }
 
     
+    parseEmail() {
+        var base64Url = this.loggedIn.split('.')[1];
+        var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+        var jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+            return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+        }).join(''));
+        
+        var json = JSON.parse(jsonPayload);
+
+        return json.Email;
+    };
+
 
     connectedCallback() {
         this.render();
