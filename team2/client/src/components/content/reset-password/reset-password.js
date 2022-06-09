@@ -10,6 +10,7 @@ class ResetPassword extends HTMLElement {
         return matches ? decodeURIComponent(matches[1]) : undefined;
     }
 
+<<<<<<< HEAD
     
     parseEmail() {
         var base64Url = this.loggedIn.split('.')[1];
@@ -23,19 +24,69 @@ class ResetPassword extends HTMLElement {
         return json.Email;
     };
 
+=======
+    resetPassword() {
+        let newPasswordElement = document.getElementById('new-password')
+        let confirmPasswordElement = document.getElementById('new-confirmPassword')
+        let resetPasswordForm = document.getElementById('reset-password-form')
+
+        resetPasswordForm.addEventListener('submit', async function(event) {
+            event.preventDefault()
+
+            let newPassword = newPasswordElement.value
+            let newPasswordConfirm = confirmPasswordElement.value
+            
+            var requestOptions = {
+                method: 'POST',
+                mode: 'cors',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            };
+            setFormMessage("success", "Password has been reset")
+
+            /*
+            await fetch(`https://idea-jar-api.herokuapp.com/Api/Auth/ForgotPassword?email=${email}`, requestOptions)
+            .then(response => {
+                if (response.ok){
+                    response.json()
+                    .then(data => {
+                        console.log(data);
+                        //window.location.assign("/index.html");
+                    });
+                } else {
+                    response.json().then(data => {
+                        // handle error response
+                        console.log(data);
+                    });
+                }
+            })
+            .catch(error => console.log(error));
+        */
+        })
+
+        // Form user feedback
+        function setFormMessage( type, message) {
+            const messageElement = document.querySelector('.form-message')
+            messageElement.textContent = message
+            messageElement.classList.remove('form-message-error', 'form-message-success')
+            messageElement.classList.add(`form-message-${type}`) 
+        }
+    }
+>>>>>>> f725fa09cf6aec1e1aa91af91e9c942b413adcfb
 
     connectedCallback() {
         this.render();
+        this.resetPassword();
     }
 
     render() {
         this.innerHTML = `
         <main>
-        <div class="card">
-        <form id="reset-password" class="">
+        <div >
+        <form class="card card-login" id="reset-password-form" class="">
 
         <h2 class="text-center">Reset Password</h2>
-
         
         <!--Create new password-->
         <div class="form-input-group">
@@ -51,7 +102,7 @@ class ResetPassword extends HTMLElement {
                 placeholder="Password" 
                 type="password" 
                 name="" 
-                id="signup-password">
+                id="new-password">
             
         </div>
         <div class="form-input-group">
@@ -60,11 +111,14 @@ class ResetPassword extends HTMLElement {
                 placeholder="Confirm password" 
                 type="password" 
                 name="" 
-                id="signup-confirmPassword">
+                id="new-confirmPassword">
             <div class="form-message"></div>
         </div> 
+        <!--Submit-->
+        <button type="submit" class="form-btn ">Continue</button>
         </form>
         </div>
+        
         </main>
         `;
     }
