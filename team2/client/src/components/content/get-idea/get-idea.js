@@ -125,7 +125,10 @@ class GetIdeaPage extends HTMLElement {
             }
         }
 
-        document.querySelector(".popup-content > h2").textContent = `${name} [${category}]`;
+        if (category != null){
+            document.querySelector(".popup-content > h2").textContent = `${name} [${category}]`;
+        }
+        document.querySelector(".popup-content > h2").textContent = `${name}`;
         document.querySelector(".popup-content > .popup-date").textContent = date;
 
         if (idea == undefined) {

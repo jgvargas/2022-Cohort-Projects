@@ -217,8 +217,8 @@ class AddIdeaPage extends HTMLElement {
         this.render();
         await this.GetIdeas();
         this.render();
-        this.DeleteIdea();
-        this.AddIdea();
+        await this.DeleteIdea();
+        await this.AddIdea();
     }
     
 
