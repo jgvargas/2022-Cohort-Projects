@@ -66,7 +66,7 @@ namespace WebAPI.Controllers {
             if (!result.IsSuccess)
                 return BadRequest(result);
 
-            return Redirect($"{_configuration["APP_URL"]}/ConfirmEmail.html");
+            return Redirect($"{_configuration["APP_URL"]}/confirmemail.html");
         }
 
 
